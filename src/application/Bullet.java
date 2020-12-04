@@ -109,7 +109,7 @@ public class Bullet extends Pane {
 						});
 //		}
 			Main.bonuses.remove(removeRect);
-	        Main.rootLvl.getChildren().remove(removeRect);
+	        Main.root.getChildren().remove(removeRect);
 			
 		bullets.remove(removeElipse);
 		Main.root.getChildren().remove(removeElipse);

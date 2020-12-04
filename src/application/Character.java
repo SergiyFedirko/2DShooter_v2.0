@@ -28,13 +28,13 @@ public class Character extends Pane {
 		getChildren().addAll(imageView);
 	}
 
-	public double getX() {
-		return this.getTranslateX();
-	}
-
-	public double getY() {
-		return this.getTranslateY();
-	}
+//	public double getX() {
+//		return this.getTranslateX();
+//	}
+//
+//	public double getY() {
+//		return this.getTranslateY();
+//	}
 
 	public void moveX(int x) {
 		boolean right = x > 0 ? true : false;
@@ -61,28 +61,6 @@ public class Character extends Pane {
 //            isBonuseEat();
 		}
 	}
-
-//	private void isWall(boolean down) {
-//		Main.gd.getWalls().forEach(e->{
-//    		if (this.getBoundsInParent().intersects(e.getBoundsInParent())) {
-////    			isWallY = true;
-////    			this.setTranslateX(this.getTranslateX() - 1);
-//    			
-//    			if(this.getTranslateX() == e.getX()-31)
-//    				this.setTranslateX(e.getX()-32);
-//    		if(this.getTranslateX() == e.getX()+39) 
-//    			this.setTranslateX(e.getX()+40);
-//    			
-////    			if(this.getTranslateX() != e.getX()-33 || this.getTranslateX() != e.getX()+41) {
-//    			if(down && this.getTranslateY() == e.getY()-31)
-//    				this.setTranslateY(e.getY()-32);
-//    			else
-//    				if(this.getTranslateY() == e.getY()+39)
-//    				this.setTranslateY(e.getY()+40);
-////    		}
-//    		}
-//    	});
-//	}
 //    
 //    public void isFiring(int f) {
 //    }

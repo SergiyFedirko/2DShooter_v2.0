@@ -1,8 +1,10 @@
 package application;
 
 import javafx.application.Application;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
@@ -20,8 +22,8 @@ import java.util.HashMap;
 
 public class Main extends Application {
 
-	private HashMap<KeyCode, Boolean> keys = new HashMap<>();
-	public static ArrayList<Rectangle> bonuses = new ArrayList<>();
+	private HashMap<KeyCode, Boolean> keys;
+	public static ArrayList<Rectangle> bonuses;
 //	public static ArrayList<Enemy> enemys = new ArrayList<>();
 //	public static ArrayList<Block> platforms = new ArrayList<>();
 	
@@ -29,19 +31,22 @@ public class Main extends Application {
 	
 	static int BLOCK_SIZE = 50;
 	
-	Image backgroundImg = new Image(getClass().getResourceAsStream("backgroundImg.jpg"));
+//	Image backgroundImg = new Image(getClass().getResourceAsStream("backgroundImg.jpg"));
 
 	Image image = new Image(getClass().getResourceAsStream("hero.png"));
 	ImageView imageView = new ImageView(image);
-	Character player = new Character(imageView);
+	Character player;
 
+	static Pane root = new Pane();
+	Scene scene = new Scene(root);
+	
 //	Enemy enemy = null;
 	int EnemyCount = 2;
 
 	Label lbl = new Label();
 
-	static Pane root = new Pane();
-	static GridPane rootLvl = new GridPane();
+	
+//	static Pane rootLvl = new Pane();
 	
 //	private int levelWidth;
 	int levelNumber = 0;
@@ -64,13 +69,13 @@ public class Main extends Application {
 
 		one = one % 5;
 		if (one == 1) {
-			double x = player.getX() + 15;
-			double y = player.getY() + 15;
+			double x = player.getTranslateX() + 15;
+			double y = player.getTranslateY() + 15;
 			Ellipse elipse = new Ellipse(5, 5);
 			elipse.setCenterX(x);
 			elipse.setCenterY(y);
 			elipse.setFill(Color.RED);
-			rootLvl.getChildren().addAll(elipse);
+			root.getChildren().addAll(elipse);
 
 			if (player.animation.getOffsetY() == 64)
 				Bullet.bulletsR.add(elipse);
@@ -104,7 +109,7 @@ public class Main extends Application {
 //			enemys.get(i).moveX(i + 1);
 //	}
 
-	public void update() {
+	public void update(Stage primaryStage) {
 
 		
 		
@@ -131,20 +136,89 @@ public class Main extends Application {
 			a = 0;
 			player.animation.stop();
 		}
-		playerGetCash();
+		playerGetCash(primaryStage);
 		Bullet.BulletRemove();
 		lbl.setText("Score: " + Bullet.getScore());
 		
 //		enemyMove();
 	}
 
-	private void playerGetCash() {
+	int i;
+	
+	private void playerGetCash(Stage primaryStage) {
 		if(player.getBoundsInParent().intersects(gd.cash.getBoundsInParent())) {
 //			score++;
-			
+			i++;
 			gd.addCash();
 //			Bullet.addScore(1);
+			if(i==1)
+			victory(primaryStage);
 		}
+		}
+
+	private void victory(Stage primaryStage) {
+		Label secondLabel = new Label("Viktory!!!");
+		secondLabel.setFont(new Font(50));
+		Pane secondaryLayout = new Pane();
+		secondaryLayout.getChildren().add(secondLabel);
+		
+		
+
+		Scene secondScene = new Scene(secondaryLayout, 200, 100);
+
+		Button btn = new Button("Next Lvl");
+		btn.setLayoutX(50);btn.setLayoutY(75);
+		btn.setPrefSize(100, 20);
+		secondaryLayout.getChildren().add(btn);
+		
+		
+		Stage newWindow = new Stage();
+		player.animation.stop();
+		newWindow.setTitle("Viktory!!!");
+		newWindow.setScene(secondScene);
+
+		btn.setOnAction(e->{
+			newWindow.close();						
+			restart(primaryStage);
+			player.animation.stop();
+		});
+		
+		
+		newWindow.initModality(Modality.WINDOW_MODAL);
+		newWindow.setResizable(false);
+		newWindow.setOnCloseRequest(e->{
+			restart(primaryStage);
+		});
+		
+		newWindow.initOwner(primaryStage);
+
+		newWindow.setX(primaryStage.getX() + 200);
+		newWindow.setY(primaryStage.getY() + 100);
+
+		newWindow.show();
+	}
+		
+	private void restart(Stage primaryStage) {
+		try {
+			clear();
+			start(primaryStage);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	
+
+	private void clear() {
+//		scene.re
+		i=0;
+		player = new Character(imageView);
+		
+		
+		root.getChildren().clear();
+		
 	}
 
 	public boolean isPressed(KeyCode key) {
@@ -156,6 +230,7 @@ public class Main extends Application {
 
 	private void initContent() {
 
+		
 		root.setPrefSize(600, 600);
 //		root.getChildren().addAll(player);
 
@@ -168,10 +243,15 @@ public class Main extends Application {
 		lbl.setLayoutX(450);
 		lbl.setTextFill(Color.BLACK);
 		lbl.setFont(new Font(20));
+		
+		
+//		System.out.println(lbl.textProperty().);
 		root.getChildren().add(lbl);
 		
 		
 //		enemyAdd(EnemyCount);
+		
+		player = new Character(imageView);
 		
 		
 		initial();
@@ -199,7 +279,8 @@ public class Main extends Application {
 	        player.setTranslateX(42);
 	        player.setTranslateY(42);
 	        player.translateXProperty().addListener((obs,old,newValue)->{
-	        	
+	        	System.out.println(player.getTranslateX());
+	        	System.out.println(player.getTranslateY());
 	        	  gd.getWalls().forEach(e->{
 	        		  if (player.getBoundsInParent().intersects(e.getBoundsInParent())) {
 //	        		  System.out.println(obs.getValue());
@@ -228,6 +309,7 @@ public class Main extends Application {
 //		    					player.setTranslateX(e.getX()+40);
 //		    			}
 		    		});
+	        	  
 	        });
 	        player.translateYProperty().addListener((obs,old,newValue)->{
 //	            int offset = newValue.intValue();
@@ -253,15 +335,17 @@ public class Main extends Application {
 //	        root.getChildren().addAll(backgroundIV,rootLvl);
 //	        root.getChildren().addAll(rootLvl);
 	}
-	
-	public static Maze gd = new Maze();
+	public static Maze gd;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
+		i=0;
+		keys = new HashMap<>();
+		bonuses = new ArrayList<>();
 		initContent();
 
-		
+		gd = new Maze();
 		
 //		gd.setPrefSize(40*5, 40*5);
 		
@@ -270,7 +354,7 @@ public class Main extends Application {
 		root.getChildren().add(gd);
 		
 		
-		Scene scene = new Scene(root);
+//		scene = new Scene(root);
 		scene.setOnKeyPressed(event -> keys.put(event.getCode(), true));
 		scene.setOnKeyReleased(event -> {
 			keys.put(event.getCode(), false);
@@ -278,7 +362,7 @@ public class Main extends Application {
 		AnimationTimer timer = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-				update();
+				update(primaryStage);
 //				bonus();
 			}
 		};
