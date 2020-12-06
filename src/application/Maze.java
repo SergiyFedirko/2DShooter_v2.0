@@ -3,9 +3,12 @@ package application;
 import java.util.ArrayList;
 import java.util.Stack;
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 public class Maze extends Pane {
 
@@ -16,7 +19,11 @@ public class Maze extends Pane {
 
 	private ArrayList<Rectangle> walls = new ArrayList<>();
 	
-	public Rectangle cash;
+//	public Rectangle cash;
+	
+	Image image;
+	ImageView imageView;
+	public Coins coin;
 
 	public ArrayList<Rectangle> getWalls() {
 		return walls;
@@ -92,13 +99,26 @@ public class Maze extends Pane {
 	}
 
 	public void addCash() {
-		if(this.getChildren().contains(cash)) {
-			this.getChildren().remove(cash);
-		Bullet.addScore(1);}
+		
+		image = new Image(getClass().getResourceAsStream("coins.png"));
+		imageView = new ImageView(image);
+		
+		
+		if(this.getChildren().contains(coin)) {
+			this.getChildren().remove(coin);
+			Bullet.addScore(1);}
 		else {
-		cash = new Rectangle(getRandomCoor(height)+10,getRandomCoor(width)+10,20,20);
-		cash.setFill(Color.YELLOW);
-		this.getChildren().add(cash);
+			coin = new Coins(imageView);
+			coin.setMaxSize(20, 20);
+			coin.setTranslateX(getRandomCoor(height)+10);
+			coin.setTranslateY(getRandomCoor(width)+10);
+//		cash = new Rectangle(getRandomCoor(height)+10,getRandomCoor(width)+10,20,20);
+//		cash.setFill(Color.YELLOW);
+			coin.animation.play();
+			coin.animation.setRate(0.3);
+			
+		this.getChildren().add(coin);
+		
 		}
 	}
 

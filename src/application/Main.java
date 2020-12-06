@@ -24,6 +24,8 @@ public class Main extends Application {
 
 	private HashMap<KeyCode, Boolean> keys;
 	public static ArrayList<Rectangle> bonuses;
+	
+	AnimationTimer timer;
 //	public static ArrayList<Enemy> enemys = new ArrayList<>();
 //	public static ArrayList<Block> platforms = new ArrayList<>();
 	
@@ -33,12 +35,12 @@ public class Main extends Application {
 	
 //	Image backgroundImg = new Image(getClass().getResourceAsStream("backgroundImg.jpg"));
 
-	Image image = new Image(getClass().getResourceAsStream("hero.png"));
-	ImageView imageView = new ImageView(image);
+	Image image;
+	ImageView imageView;
 	Character player;
 
-	static Pane root = new Pane();
-	Scene scene = new Scene(root);
+	static Pane root;
+	Scene scene;
 	
 //	Enemy enemy = null;
 	int EnemyCount = 2;
@@ -111,7 +113,7 @@ public class Main extends Application {
 
 	public void update(Stage primaryStage) {
 
-		
+//		gd.coin.animation.play();
 		
 		if (isPressed(KeyCode.UP)) {
 			player.animation.play();
@@ -146,7 +148,7 @@ public class Main extends Application {
 	int i;
 	
 	private void playerGetCash(Stage primaryStage) {
-		if(player.getBoundsInParent().intersects(gd.cash.getBoundsInParent())) {
+		if(player.getBoundsInParent().intersects(gd.coin.getBoundsInParent())) {
 //			score++;
 			i++;
 			gd.addCash();
@@ -162,7 +164,8 @@ public class Main extends Application {
 		Pane secondaryLayout = new Pane();
 		secondaryLayout.getChildren().add(secondLabel);
 		
-		
+//		clear();
+		keys.clear();
 
 		Scene secondScene = new Scene(secondaryLayout, 200, 100);
 
@@ -173,14 +176,12 @@ public class Main extends Application {
 		
 		
 		Stage newWindow = new Stage();
-		player.animation.stop();
 		newWindow.setTitle("Viktory!!!");
 		newWindow.setScene(secondScene);
 
 		btn.setOnAction(e->{
 			newWindow.close();						
 			restart(primaryStage);
-			player.animation.stop();
 		});
 		
 		
@@ -215,7 +216,8 @@ public class Main extends Application {
 //		scene.re
 		i=0;
 		player = new Character(imageView);
-		
+		keys.clear();
+		timer.stop();
 		
 		root.getChildren().clear();
 		
@@ -250,7 +252,8 @@ public class Main extends Application {
 		
 		
 //		enemyAdd(EnemyCount);
-		
+		image = new Image(getClass().getResourceAsStream("hero.png"));
+		imageView = new ImageView(image);
 		player = new Character(imageView);
 		
 		
@@ -279,8 +282,6 @@ public class Main extends Application {
 	        player.setTranslateX(42);
 	        player.setTranslateY(42);
 	        player.translateXProperty().addListener((obs,old,newValue)->{
-	        	System.out.println(player.getTranslateX());
-	        	System.out.println(player.getTranslateY());
 	        	  gd.getWalls().forEach(e->{
 	        		  if (player.getBoundsInParent().intersects(e.getBoundsInParent())) {
 //	        		  System.out.println(obs.getValue());
@@ -340,6 +341,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
+		root = new Pane();
+		scene = new Scene(root);
 		i=0;
 		keys = new HashMap<>();
 		bonuses = new ArrayList<>();
@@ -359,7 +362,7 @@ public class Main extends Application {
 		scene.setOnKeyReleased(event -> {
 			keys.put(event.getCode(), false);
 		});
-		AnimationTimer timer = new AnimationTimer() {
+		timer = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
 				update(primaryStage);
