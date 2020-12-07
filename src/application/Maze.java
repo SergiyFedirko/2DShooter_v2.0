@@ -8,14 +8,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
 
 public class Maze extends Pane {
 
-	private int height = 11;
-	private int width = 11;
+	private int hight;
+	private int width;
 
-	private int SizeBlock = 40;
+	private int SizeBlock;
 
 	private ArrayList<Rectangle> walls = new ArrayList<>();
 	
@@ -36,7 +35,10 @@ public class Maze extends Pane {
 	private ArrayList<Point2D> neighbours = new ArrayList<>();
 	private ArrayList<Point2D> visited = new ArrayList<>();
 
-	public Maze() {
+	public Maze(int hight, int width, int SizeBlock) {
+		this.hight = hight;
+		this.width=width;
+		this.SizeBlock=SizeBlock;
 //		rect = new Rectangle(40,40,Color.DARKGRAY);
 //		rect.setX(100); rect.setY(100);
 //		
@@ -52,11 +54,11 @@ public class Maze extends Pane {
 
 	public void generateMaze() {
 
-		for (int i = 0; i < height; i++) {
+		for (int i = 0; i < hight; i++) {
 			for (int j = 0; j < width; j++) {
-				if ((i % 2 != 0 && j % 2 != 0) && (i < height - 1 && j < width - 1)) {
+				if ((i % 2 != 0 && j % 2 != 0) && (i < hight - 1 && j < width - 1)) {
 				} else {
-					Rectangle rect = new Rectangle(i * 40, j * 40, SizeBlock, SizeBlock);
+					Rectangle rect = new Rectangle(j * SizeBlock, i * SizeBlock, SizeBlock, SizeBlock);
 					rect.setFill(Color.DARKGRAY);
 					walls.add(rect);
 //					this.getChildren().add(rect);
@@ -64,7 +66,6 @@ public class Maze extends Pane {
 				}
 			}
 		}
-
 		Point2D CourentPoint = new Point2D(courentX, courentY);
 		stack.add(CourentPoint);
 		visited.add(CourentPoint);
@@ -74,7 +75,9 @@ public class Maze extends Pane {
 		////////////////////////////////////////////////////////////////////////////////////
 
 		do {
-			Neighbours neighbours = new Neighbours(CourentPoint, width, height, visited);
+//		for (int i = 0; i <10; i++) {
+		
+			Neighbours neighbours = new Neighbours(CourentPoint, width, hight, visited);
 			this.neighbours = neighbours.getNeighbours();
 
 			if (this.neighbours.size() != 0) {
@@ -84,18 +87,18 @@ public class Maze extends Pane {
 				removeWall(CourentPoint, this.neighbours.get(randNum));
 
 				CourentPoint = this.neighbours.get(randNum);
-
 				visited.add(this.neighbours.get(randNum));
 
 				stack.add(this.neighbours.get(randNum));
-
 			} else if (stack.size() > 0) {
 				stack.remove(stack.lastElement());
 				CourentPoint = stack.lastElement();
-
+				
 			}
-			
+//			}
+//			System.out.println(unvisitedCount());
 		} while (unvisitedCount() > 0);
+//		System.out.println(unvisitedCount());
 	}
 
 	public void addCash() {
@@ -110,8 +113,8 @@ public class Maze extends Pane {
 		else {
 			coin = new Coins(imageView);
 			coin.setMaxSize(20, 20);
-			coin.setTranslateX(getRandomCoor(height)+10);
-			coin.setTranslateY(getRandomCoor(width)+10);
+			coin.setTranslateX(getRandomCoor(width)+10);
+			coin.setTranslateY(getRandomCoor(hight)+10);
 //		cash = new Rectangle(getRandomCoor(height)+10,getRandomCoor(width)+10,20,20);
 //		cash.setFill(Color.YELLOW);
 			coin.animation.play();
@@ -125,13 +128,13 @@ public class Maze extends Pane {
 	private double getRandomCoor(int length) {
 		int x = length/2 + (int)( Math.random() * (length/2));
 		if(x%2 != 0)
-			return x*40;
+			return x*SizeBlock;
 		else
 			return getRandomCoor ( length);
 	}
 
 	private int unvisitedCount() {
-		return ((width - 1) / 2) * ((height - 1) / 2) - visited.size();
+		return ((width - 1) / 2) * ((hight - 1) / 2) - visited.size();
 	}
 
 	int remoweWall;
@@ -140,11 +143,12 @@ public class Maze extends Pane {
 		int x = (int) Math.abs((p1.getX() + p2.getX()) / 2);
 		int y = (int) Math.abs((p1.getY() + p2.getY()) / 2);
 
-//		System.out.println(x);
-//		System.out.println(y);
-
+//		System.out.println("x="+x);
+//		System.out.println("y="+y);
+//		if(x!=1||x!=width-1||y!=1||y!=height-1) {
 		walls.forEach((rect) -> {
-			if (rect.getX() / 40 == x && rect.getY() / 40 == y) {
+			
+			if (rect.getX()  == x * SizeBlock&& rect.getY()  == y*SizeBlock) {
 //				System.out.println("123 = " + walls.indexOf(rect));
 				remoweWall = walls.indexOf(rect);
 //				walls.remove(rect);
@@ -153,5 +157,5 @@ public class Maze extends Pane {
 
 		walls.remove(remoweWall);
 	}
-
+//	}
 }

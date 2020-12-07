@@ -40,7 +40,8 @@ public class Character extends Pane {
 		boolean right = x > 0 ? true : false;
 
 		for (int i = 0; i < Math.abs(x); i++) {
-			if (right && this.getTranslateX() < 400 - 32) {
+//			if (right && this.getTranslateX() < 400 - 32) {
+			if (right) {
 				this.setTranslateX(this.getTranslateX() + 1);
 			} else if (this.getTranslateX() > 0) {
 
@@ -54,7 +55,7 @@ public class Character extends Pane {
 		boolean down = y > 0 ? true : false;
 
 		for (int i = 0; i < Math.abs(y); i++) {
-			if (down && this.getTranslateY() < 400 - 35)
+			if (down)
 				this.setTranslateY(this.getTranslateY() + 1);
 			else if (this.getTranslateY() > 0)
 				this.setTranslateY(this.getTranslateY() - 1);

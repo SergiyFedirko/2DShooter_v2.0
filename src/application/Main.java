@@ -10,7 +10,6 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
@@ -21,6 +20,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Main extends Application {
+	
+	
+	private int hight = 5;
+	private int width = 7;
+	
+	private int SizeBlock = 40;
 
 	private HashMap<KeyCode, Boolean> keys;
 	public static ArrayList<Rectangle> bonuses;
@@ -31,7 +36,7 @@ public class Main extends Application {
 	
 	int a = 0;
 	
-	static int BLOCK_SIZE = 50;
+//	static int BLOCK_SIZE = 50;
 	
 //	Image backgroundImg = new Image(getClass().getResourceAsStream("backgroundImg.jpg"));
 
@@ -48,7 +53,7 @@ public class Main extends Application {
 	Label lbl = new Label();
 
 	
-//	static Pane rootLvl = new Pane();
+	private Pane rootLvl = new Pane();
 	
 //	private int levelWidth;
 	int levelNumber = 0;
@@ -202,6 +207,8 @@ public class Main extends Application {
 	private void restart(Stage primaryStage) {
 		try {
 			clear();
+			width += 2;
+			hight += 2;
 			start(primaryStage);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -219,6 +226,7 @@ public class Main extends Application {
 		keys.clear();
 		timer.stop();
 		
+		rootLvl.getChildren().clear();
 		root.getChildren().clear();
 		
 	}
@@ -233,13 +241,13 @@ public class Main extends Application {
 	private void initContent() {
 
 		
-		root.setPrefSize(600, 600);
+		
 //		root.getChildren().addAll(player);
 
-		Rectangle area = new Rectangle(0, 0, 401, 401);
-		area.setFill(Color.TRANSPARENT);
-		area.setStroke(Color.BLACK);
-		root.getChildren().addAll(area);
+//		Rectangle area = new Rectangle(0, 0, 401, 401);
+//		area.setFill(Color.TRANSPARENT);
+//		area.setStroke(Color.BLACK);
+//		root.getChildren().addAll(area);
 
 		lbl.setText("Score: " + Bullet.getScore());
 		lbl.setLayoutX(450);
@@ -342,19 +350,22 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 
 		root = new Pane();
+		root.setPrefSize(600, 600);
 		scene = new Scene(root);
 		i=0;
 		keys = new HashMap<>();
 		bonuses = new ArrayList<>();
 		initContent();
+		
 
-		gd = new Maze();
+		gd = new Maze(hight,width,SizeBlock);
 		
 //		gd.setPrefSize(40*5, 40*5);
 		
 //		System.out.println(gd.);
-		
-		root.getChildren().add(gd);
+//		rootLvl.setPrefSize(600, 600);
+		rootLvl.getChildren().add(gd);
+		root.getChildren().add(rootLvl);
 		
 		
 //		scene = new Scene(root);
