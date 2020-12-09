@@ -53,7 +53,8 @@ public class Main extends Application {
 	Label lbl = new Label();
 
 	
-	private Pane rootLvl = new Pane();
+	private Pane rootLvl;
+	public static Maze maze;
 	
 //	private int levelWidth;
 	int levelNumber = 0;
@@ -153,10 +154,10 @@ public class Main extends Application {
 	int i;
 	
 	private void playerGetCash(Stage primaryStage) {
-		if(player.getBoundsInParent().intersects(gd.coin.getBoundsInParent())) {
+		if(player.getBoundsInParent().intersects(maze.coin.getBoundsInParent())) {
 //			score++;
 			i++;
-			gd.addCash();
+			maze.addCash();
 //			Bullet.addScore(1);
 			if(i==1)
 			victory(primaryStage);
@@ -249,7 +250,7 @@ public class Main extends Application {
 	        player.setTranslateX(42);
 	        player.setTranslateY(42);
 	        player.translateXProperty().addListener((obs,old,newValue)->{
-	        	  gd.getWalls().forEach(e->{
+	        	  maze.getWalls().forEach(e->{
 	        		  if (player.getBoundsInParent().intersects(e.getBoundsInParent())) {
 	        		 if(newValue.doubleValue() == (e.getX()-32)) 
 	        			 player.setTranslateX(old.doubleValue());
@@ -264,7 +265,7 @@ public class Main extends Application {
 	        	  
 	        });
 	        player.translateYProperty().addListener((obs,old,newValue)->{
-	            gd.getWalls().forEach(e->{
+	            maze.getWalls().forEach(e->{
 	    			if(player.getBoundsInParent().intersects(e.getBoundsInParent())) {
 	    				 if(newValue.doubleValue() == (e.getY()-32)) 
 		        			 player.setTranslateY(old.doubleValue());
@@ -275,27 +276,8 @@ public class Main extends Application {
 	        });
 	        rootLvl.getChildren().add(player);
 	}
-	public static Maze gd;
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-
-		root = new Pane();
-		root.setPrefSize(800, 600);
-		scene = new Scene(root);
-		i=0;
-		keys = new HashMap<>();
-		bonuses = new ArrayList<>();
-		
-
-		playerProperty();
-
-		gd = new Maze(hight,width,SizeBlock);
-		
-		rootLvl.setPrefSize(600, 600);
-		rootLvl.getChildren().add(gd);
-		root.getChildren().add(rootLvl);
-		
+	
+	private void addMenu() {
 		Rectangle menuArea = new Rectangle(601, 0, 200, 600);
 		menuArea.setFill(Color.CADETBLUE);
 		menuArea.setStroke(Color.BLACK);
@@ -307,6 +289,35 @@ public class Main extends Application {
 		lbl.setFont(new Font(20));
 		
 		root.getChildren().add(lbl);
+	}
+
+	public static void main(String[] args) {
+		launch(args);
+	}
+	
+
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+
+		root = new Pane();
+		rootLvl = new Pane();
+		root.setPrefSize(800, 600);
+		scene = new Scene(root);
+		keys = new HashMap<>();
+		bonuses = new ArrayList<>();
+		
+		
+		i=0;
+
+		playerProperty();
+
+		maze = new Maze(hight,width,SizeBlock);
+		rootLvl.setPrefSize(600, 600);
+		rootLvl.getChildren().add(maze);
+		root.getChildren().add(rootLvl);
+		
+		addMenu();
 		
 //		scene = new Scene(root);
 		scene.setOnKeyPressed(event -> keys.put(event.getCode(), true));
@@ -327,8 +338,6 @@ public class Main extends Application {
 
 	}
 
-	public static void main(String[] args) {
-		launch(args);
-	}
+	
 
 }

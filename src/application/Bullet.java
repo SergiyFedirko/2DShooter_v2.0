@@ -90,7 +90,7 @@ public class Bullet extends Pane {
 			bullets.forEach(elipse ->{
 				elipse.setCenterX(elipse.getCenterX() + speedX);
 				elipse.setCenterY(elipse.getCenterY() + speedY);
-			Main.gd.getWalls().forEach((rect) ->{
+			Main.maze.getWalls().forEach((rect) ->{
 				
 					if(elipse.getBoundsInParent().intersects(rect.getBoundsInParent())) {
 						removeElipse = elipse;

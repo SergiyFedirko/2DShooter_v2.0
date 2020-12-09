@@ -6,7 +6,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
 public class Maze extends Pane {
@@ -53,13 +53,14 @@ public class Maze extends Pane {
 	}
 
 	public void generateMaze() {
-
+		Image img = new Image(getClass().getResourceAsStream("wall.png"));
 		for (int i = 0; i < hight; i++) {
 			for (int j = 0; j < width; j++) {
 				if ((i % 2 != 0 && j % 2 != 0) && (i < hight - 1 && j < width - 1)) {
 				} else {
 					Rectangle rect = new Rectangle(j * SizeBlock, i * SizeBlock, SizeBlock, SizeBlock);
-					rect.setFill(Color.DARKGRAY);
+//					rect.setFill(Color.DARKGRAY);
+					rect.setFill(new ImagePattern(img));
 					walls.add(rect);
 //					this.getChildren().add(rect);
 
