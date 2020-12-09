@@ -2,13 +2,8 @@ package application;
 
 //import java.awt.*;
 import java.util.ArrayList;
-
-//import javafx.scene.image.Image;
-//import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-//import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
-import javafx.scene.shape.Rectangle;
 
 public class Bullet extends Pane {
 
@@ -27,7 +22,7 @@ public class Bullet extends Pane {
 	public static ArrayList<Ellipse> bulletsD = new ArrayList<>();
 	
 	private static Ellipse removeElipse = null;
-	private static Rectangle removeRect = null;
+//	private static Rectangle removeRect = null;
 	private static int ScoreMain;
 	private static int speed = 10;
 	
@@ -95,21 +90,21 @@ public class Bullet extends Pane {
 			bullets.forEach(elipse ->{
 				elipse.setCenterX(elipse.getCenterX() + speedX);
 				elipse.setCenterY(elipse.getCenterY() + speedY);
-			Main.bonuses.forEach((rect) ->{
+			Main.gd.getWalls().forEach((rect) ->{
 				
 					if(elipse.getBoundsInParent().intersects(rect.getBoundsInParent())) {
-						removeRect = rect;
-						ScoreMain++;
-						System.out.println(ScoreMain);
+						removeElipse = elipse;
+//						ScoreMain++;
+//						System.out.println(ScoreMain);
 					}
 				});
-			if(elipse.getCenterX()>=600 || elipse.getCenterY()>=950) 
+			if(elipse.getCenterX()>=600 || elipse.getCenterY()>=600) 
 			removeElipse = elipse;
 		
 						});
 //		}
-			Main.bonuses.remove(removeRect);
-	        Main.root.getChildren().remove(removeRect);
+//			Main.bonuses.remove(removeRect);
+//	        Main.root.getChildren().remove(removeRect);
 			
 		bullets.remove(removeElipse);
 		Main.root.getChildren().remove(removeElipse);

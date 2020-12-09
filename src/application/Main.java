@@ -22,8 +22,8 @@ import java.util.HashMap;
 public class Main extends Application {
 	
 	
-	private int hight = 5;
-	private int width = 7;
+	private int hight = 15;
+	private int width = 15;
 	
 	private int SizeBlock = 40;
 
@@ -208,7 +208,7 @@ public class Main extends Application {
 		try {
 			clear();
 			width += 2;
-			hight += 2;
+//			hight += 2;
 			start(primaryStage);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -220,13 +220,14 @@ public class Main extends Application {
 	
 
 	private void clear() {
-//		scene.re
+		
 		i=0;
 		player = new Character(imageView);
 		keys.clear();
 		timer.stop();
 		
 		rootLvl.getChildren().clear();
+		rootLvl.setLayoutX(0);
 		root.getChildren().clear();
 		
 	}
@@ -238,91 +239,31 @@ public class Main extends Application {
 	public void Delete() {
 	}
 
-	private void initContent() {
-
 		
+	public void playerProperty() {
 		
-//		root.getChildren().addAll(player);
-
-//		Rectangle area = new Rectangle(0, 0, 401, 401);
-//		area.setFill(Color.TRANSPARENT);
-//		area.setStroke(Color.BLACK);
-//		root.getChildren().addAll(area);
-
-		lbl.setText("Score: " + Bullet.getScore());
-		lbl.setLayoutX(450);
-		lbl.setTextFill(Color.BLACK);
-		lbl.setFont(new Font(20));
-		
-		
-//		System.out.println(lbl.textProperty().);
-		root.getChildren().add(lbl);
-		
-		
-//		enemyAdd(EnemyCount);
 		image = new Image(getClass().getResourceAsStream("hero.png"));
 		imageView = new ImageView(image);
 		player = new Character(imageView);
 		
-		
-		initial();
-
-	}
-	
-	
-	
-	public void initial() {
-		
-			
-		
-		
-		
-		
-		
-		
-//		 ImageView backgroundIV = new ImageView(backgroundImg);
-//	        backgroundIV.setFitHeight(450);
-//	        backgroundIV.setFitWidth(600);
-
-//	        LvlData.initLvl(levelNumber, BLOCK_SIZE);
-//	        levelWidth = LvlData.levels[levelNumber].length*BLOCK_SIZE;
-//	        player =new Character();
 	        player.setTranslateX(42);
 	        player.setTranslateY(42);
 	        player.translateXProperty().addListener((obs,old,newValue)->{
 	        	  gd.getWalls().forEach(e->{
 	        		  if (player.getBoundsInParent().intersects(e.getBoundsInParent())) {
-//	        		  System.out.println(obs.getValue());
-//	        		  System.out.println(old.doubleValue());
-//	        		  System.out.println(newValue.doubleValue());
-//	        		  System.out.println(e.getX());
-//	        		  System.out.println(obs.getValue().doubleValue() == (e.getX()-32));
 	        		 if(newValue.doubleValue() == (e.getX()-32)) 
 	        			 player.setTranslateX(old.doubleValue());
 	        		 if(newValue.doubleValue() == (e.getX())+40) 
 	        			 player.setTranslateX(old.doubleValue());
 	        		 
-//	        			 newValue = e.getX()-32;
 	        		  }
-//		    			if(obs.getValue().equals(e.getX())) {
-//		    			if(player.getTranslateY()== e.getY()-31)
-//		    				player.setTranslateY(e.getY()-32);
-//		    		if(player.getTranslateY() == e.getY()+39) 
-//		    			player.setTranslateY(e.getY()+40);
-//		    		
-//		    				
-//		    			if( player.getTranslateX() == e.getX()-31)
-//		    				player.setTranslateX(e.getX()-32);
-//		    			else
-//		    				if(player.getTranslateX() == e.getX()+39)
-//		    					player.setTranslateX(e.getX()+40);
-//		    			}
 		    		});
+	        	  
+	        	  if(newValue.intValue()>300 && newValue.intValue()<width*40-300)
+		                rootLvl.setLayoutX(-(newValue.intValue()-300));
 	        	  
 	        });
 	        player.translateYProperty().addListener((obs,old,newValue)->{
-//	            int offset = newValue.intValue();
-//	            player.isBonuseEat();
 	            gd.getWalls().forEach(e->{
 	    			if(player.getBoundsInParent().intersects(e.getBoundsInParent())) {
 	    				 if(newValue.doubleValue() == (e.getY()-32)) 
@@ -331,18 +272,8 @@ public class Main extends Application {
 		        			 player.setTranslateY(old.doubleValue());
 	    			}
 	    		});
-	            
-//	            if(offset>0 && offset<levelWidth){
-//	            	
-//	                rootLvl.setLayoutY(-(offset-250));
-////	                System.out.println(offset);
-////	                System.out.println(levelWidth);
-//	                backgroundIV.setLayoutY(-(offset-240));
-//	            }
 	        });
-	        root.getChildren().add(player);
-//	        root.getChildren().addAll(backgroundIV,rootLvl);
-//	        root.getChildren().addAll(rootLvl);
+	        rootLvl.getChildren().add(player);
 	}
 	public static Maze gd;
 
@@ -350,23 +281,32 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 
 		root = new Pane();
-		root.setPrefSize(600, 600);
+		root.setPrefSize(800, 600);
 		scene = new Scene(root);
 		i=0;
 		keys = new HashMap<>();
 		bonuses = new ArrayList<>();
-		initContent();
 		
+
+		playerProperty();
 
 		gd = new Maze(hight,width,SizeBlock);
 		
-//		gd.setPrefSize(40*5, 40*5);
-		
-//		System.out.println(gd.);
-//		rootLvl.setPrefSize(600, 600);
+		rootLvl.setPrefSize(600, 600);
 		rootLvl.getChildren().add(gd);
 		root.getChildren().add(rootLvl);
 		
+		Rectangle menuArea = new Rectangle(601, 0, 200, 600);
+		menuArea.setFill(Color.CADETBLUE);
+		menuArea.setStroke(Color.BLACK);
+		root.getChildren().add(menuArea);
+		
+		lbl.setText("Score: " + Bullet.getScore());
+		lbl.setLayoutX(650);
+		lbl.setTextFill(Color.BLACK);
+		lbl.setFont(new Font(20));
+		
+		root.getChildren().add(lbl);
 		
 //		scene = new Scene(root);
 		scene.setOnKeyPressed(event -> keys.put(event.getCode(), true));
