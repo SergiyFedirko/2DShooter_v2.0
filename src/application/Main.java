@@ -47,7 +47,7 @@ public class Main extends Application {
 	static Pane root;
 	Scene scene;
 	
-//	Enemy enemy = null;
+	Enemy enemy = null;
 	int EnemyCount = 2;
 
 	Label lbl = new Label();
@@ -57,7 +57,7 @@ public class Main extends Application {
 	public static Maze maze;
 	
 //	private int levelWidth;
-	int levelNumber = 0;
+//	int levelNumber = 0;
 
 
 	public void bonus() {
@@ -98,16 +98,18 @@ public class Main extends Application {
 
 	}
 
-//	public void enemyAdd(int count) {
+//	public void enemyAdd() {
 //
-//		for (int i = 0; i < count; i++) {
+////		for (int i = 0; i < count; i++) {
 //			Image imageEnemy = new Image(getClass().getResourceAsStream("enemy.png"));
 //			ImageView imageViewEnemy = new ImageView(imageEnemy);
 //			enemy = new Enemy(imageViewEnemy);
+//			enemy.setLayoutX(122);
+//			enemy.setLayoutY(122);
 //			enemys.add(enemy);
 //			rootLvl.getChildren().add(enemy);
 //			enemy.animation.play();
-//		}
+////		}
 //		
 //	}
 
@@ -118,8 +120,6 @@ public class Main extends Application {
 //	}
 
 	public void update(Stage primaryStage) {
-
-//		gd.coin.animation.play();
 		
 		if (isPressed(KeyCode.UP)) {
 			player.animation.play();
@@ -137,13 +137,16 @@ public class Main extends Application {
 			player.animation.play();
 			player.animation.setOffsetY(32);
 			player.moveX(-2);
-		} else if (isPressed(KeyCode.CONTROL)) {
-			a++;
-			bullet(a);
 		} else {
-			a = 0;
+			
 			player.animation.stop();
 		}
+		
+		if (isPressed(KeyCode.CONTROL)) {
+			a++;
+			bullet(a);
+		} else 
+			a = 0;
 		playerGetCash(primaryStage);
 		Bullet.BulletRemove();
 		lbl.setText("Score: " + Bullet.getScore());
@@ -306,7 +309,6 @@ public class Main extends Application {
 		scene = new Scene(root);
 		keys = new HashMap<>();
 		bonuses = new ArrayList<>();
-		
 		
 		i=0;
 

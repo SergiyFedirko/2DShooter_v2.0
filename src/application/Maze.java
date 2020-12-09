@@ -23,6 +23,9 @@ public class Maze extends Pane {
 	Image image;
 	ImageView imageView;
 	public Coins coin;
+	
+	Enemy enemy = null;
+	public static ArrayList<Enemy> enemys = new ArrayList<>();
 
 	public ArrayList<Rectangle> getWalls() {
 		return walls;
@@ -52,7 +55,7 @@ public class Maze extends Pane {
 		this.getChildren().addAll(walls);
 	}
 
-	public void generateMaze() {
+	private void generateMaze() {
 		Image img = new Image(getClass().getResourceAsStream("wall.png"));
 		for (int i = 0; i < hight; i++) {
 			for (int j = 0; j < width; j++) {
@@ -73,6 +76,7 @@ public class Maze extends Pane {
 
 		
 		addCash();
+		addEnemys((int)(width/3));
 		////////////////////////////////////////////////////////////////////////////////////
 
 		do {
@@ -102,6 +106,22 @@ public class Maze extends Pane {
 //		System.out.println(unvisitedCount());
 	}
 
+	private void addEnemys(int count) {
+
+		for (int i = 0; i < count; i++) {
+			Image imageEnemy = new Image(getClass().getResourceAsStream("enemy.png"));
+			ImageView imageViewEnemy = new ImageView(imageEnemy);
+			enemy = new Enemy(imageViewEnemy);
+			enemy.setLayoutX(getRandomCoor(width,false));
+			enemy.setLayoutY(getRandomCoor(hight,false));
+			enemys.add(enemy);
+			this.getChildren().add(enemy);
+			enemy.animation.play();
+		}
+		
+		
+	}
+
 	public void addCash() {
 		
 		image = new Image(getClass().getResourceAsStream("coins.png"));
@@ -114,8 +134,8 @@ public class Maze extends Pane {
 		else {
 			coin = new Coins(imageView);
 			coin.setMaxSize(20, 20);
-			coin.setTranslateX(getRandomCoor(width)+10);
-			coin.setTranslateY(getRandomCoor(hight)+10);
+			coin.setTranslateX(getRandomCoor(width,true)+10);
+			coin.setTranslateY(getRandomCoor(hight,true)+10);
 //		cash = new Rectangle(getRandomCoor(height)+10,getRandomCoor(width)+10,20,20);
 //		cash.setFill(Color.YELLOW);
 			coin.animation.play();
@@ -126,12 +146,14 @@ public class Maze extends Pane {
 		}
 	}
 
-	private double getRandomCoor(int length) {
-		int x = length/2 + (int)( Math.random() * (length/2));
+	private double getRandomCoor(int length, boolean isCoin) {
+		int x = isCoin?length/2 + (int)( Math.random() * (length/2)):(int)( Math.random() * (length));
+//		int x = length/2 + (int)( Math.random() * (length/2));
+//		int x =  (int)( Math.random() * (length));
 		if(x%2 != 0)
 			return x*SizeBlock;
 		else
-			return getRandomCoor ( length);
+			return getRandomCoor ( length,isCoin);
 	}
 
 	private int unvisitedCount() {
