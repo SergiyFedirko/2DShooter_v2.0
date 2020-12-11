@@ -15,16 +15,27 @@ public class Coins extends Pane{
 	int offsetY = 0;
 	int width = 20;
 	int height = 20;
+	double x, y;
 //    int score = 0;
 
 	Rectangle removeRect = null;
 	SpriteAnimation animation;
 	
-	public Coins(ImageView imageView) {
+	public Coins(ImageView imageView, double x, double y) {
+		this.x = x;
+		this.y = y;
 		this.imageView = imageView;
 		this.imageView.setViewport(new Rectangle2D(offsetX, offsetY, width, height));
 		animation = new SpriteAnimation(imageView, Duration.millis(200), count, columns, offsetX, offsetY, width,
 				height);
 		getChildren().addAll(imageView);
+		
+		setCoor();
+//		this.setPrefSize(20, 20);
+	}
+
+	private void setCoor() {
+		this.setTranslateX(x);
+		this.setTranslateY(y);
 	}
 }

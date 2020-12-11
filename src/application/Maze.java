@@ -24,7 +24,7 @@ public class Maze extends Pane {
 	ImageView imageView;
 	public Coins coin;
 	
-	Enemy enemy = null;
+	private Enemy enemy = null;
 	public static ArrayList<Enemy> enemys = new ArrayList<>();
 
 	public ArrayList<Rectangle> getWalls() {
@@ -49,6 +49,9 @@ public class Maze extends Pane {
 
 		generateMaze();
 		showMaze();
+		enemys.forEach(enemy->{
+			enemy.startMove();
+		});
 	}
 
 	private void showMaze() {
@@ -76,7 +79,7 @@ public class Maze extends Pane {
 
 		
 		addCash();
-		addEnemys((int)(width/3));
+		
 		////////////////////////////////////////////////////////////////////////////////////
 
 		do {
@@ -89,7 +92,7 @@ public class Maze extends Pane {
 
 				int randNum = (int) (Math.random() * this.neighbours.size());
 
-				removeWall(CourentPoint, this.neighbours.get(randNum));
+				enemyAndWall(CourentPoint, this.neighbours.get(randNum));
 
 				CourentPoint = this.neighbours.get(randNum);
 				visited.add(this.neighbours.get(randNum));
@@ -104,20 +107,28 @@ public class Maze extends Pane {
 //			System.out.println(unvisitedCount());
 		} while (unvisitedCount() > 0);
 //		System.out.println(unvisitedCount());
+		
 	}
 
-	private void addEnemys(int count) {
-
-		for (int i = 0; i < count; i++) {
+	private void addEnemy(int x, int y, double distance, boolean isX) {
+//		for (int i = 0; i < count; i++) {
 			Image imageEnemy = new Image(getClass().getResourceAsStream("enemy.png"));
 			ImageView imageViewEnemy = new ImageView(imageEnemy);
-			enemy = new Enemy(imageViewEnemy);
-			enemy.setLayoutX(getRandomCoor(width,false));
-			enemy.setLayoutY(getRandomCoor(hight,false));
+			enemy = new Enemy(imageViewEnemy, x, y, distance, isX);
+			
+//			enemy.setTranslateX(x*40);
+//			enemy.setTranslateY(y*40);
+			
+//			enemy.setTranslateX(getRandomCoor(width-1,false));
+//			enemy.setTranslateY(getRandomCoor(hight-1,false));
+//			enemy.setLayoutX(getRandomCoor(width,false));
+//			enemy.setLayoutY(getRandomCoor(hight,false));
+			
+//			enemy.moveX();
 			enemys.add(enemy);
 			this.getChildren().add(enemy);
-			enemy.animation.play();
-		}
+			
+//		}
 		
 		
 	}
@@ -132,12 +143,7 @@ public class Maze extends Pane {
 			this.getChildren().remove(coin);
 			Bullet.addScore(1);}
 		else {
-			coin = new Coins(imageView);
-			coin.setMaxSize(20, 20);
-			coin.setTranslateX(getRandomCoor(width,true)+10);
-			coin.setTranslateY(getRandomCoor(hight,true)+10);
-//		cash = new Rectangle(getRandomCoor(height)+10,getRandomCoor(width)+10,20,20);
-//		cash.setFill(Color.YELLOW);
+			coin = new Coins(imageView,getRandomCoor(width,true)+10, getRandomCoor(hight,true)+10);
 			coin.animation.play();
 			coin.animation.setRate(0.3);
 			
@@ -147,9 +153,7 @@ public class Maze extends Pane {
 	}
 
 	private double getRandomCoor(int length, boolean isCoin) {
-		int x = isCoin?length/2 + (int)( Math.random() * (length/2)):(int)( Math.random() * (length));
-//		int x = length/2 + (int)( Math.random() * (length/2));
-//		int x =  (int)( Math.random() * (length));
+		int x = isCoin?(length/2 + (int)( Math.random() * (length/2))):(3 +(int)( Math.random() * (length-3)));
 		if(x%2 != 0)
 			return x*SizeBlock;
 		else
@@ -161,24 +165,41 @@ public class Maze extends Pane {
 	}
 
 	int remoweWall;
+	int procentRespawnEnemy = 5;
 
-	private void removeWall(Point2D p1, Point2D p2) {
+	private void enemyAndWall(Point2D p1, Point2D p2) {
 		int x = (int) Math.abs((p1.getX() + p2.getX()) / 2);
 		int y = (int) Math.abs((p1.getY() + p2.getY()) / 2);
+		
+		double distance = p1.getX()-p2.getX()==0?p1.getY()-p2.getY():p1.getX()-p2.getX();
+		boolean isX = p1.getX()-p2.getX()==0?false:true;
+		
+		respawnEnemy(x, y, distance, isX);
 
-//		System.out.println("x="+x);
-//		System.out.println("y="+y);
-//		if(x!=1||x!=width-1||y!=1||y!=height-1) {
+		remoweWall(x, y);
+	}
+//	}
+
+	private void remoweWall(int x, int y) {
 		walls.forEach((rect) -> {
 			
 			if (rect.getX()  == x * SizeBlock&& rect.getY()  == y*SizeBlock) {
-//				System.out.println("123 = " + walls.indexOf(rect));
 				remoweWall = walls.indexOf(rect);
-//				walls.remove(rect);
+				
 			}
 		});
 
 		walls.remove(remoweWall);
 	}
-//	}
+
+	private void respawnEnemy(int x, int y, double distance, boolean isX) {
+		int rand = (int)( Math.random() * 100);
+		
+		if(enemys.size()<(int)(width/3) && x>3 && y>3) {
+			if(rand < procentRespawnEnemy)
+		addEnemy(x,y,distance, isX);
+			else
+				procentRespawnEnemy++;
+		}
+	}
 }

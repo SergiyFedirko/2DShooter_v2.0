@@ -230,6 +230,8 @@ public class Main extends Application {
 		keys.clear();
 		timer.stop();
 		
+		maze.enemys.clear();
+		
 		rootLvl.getChildren().clear();
 		rootLvl.setLayoutX(0);
 		root.getChildren().clear();
