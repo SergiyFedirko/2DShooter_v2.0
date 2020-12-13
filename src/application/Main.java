@@ -1,6 +1,7 @@
 package application;
 
 import javafx.application.Application;
+import javafx.beans.InvalidationListener;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -18,31 +19,27 @@ import javafx.scene.text.Font;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Set;
 
 public class Main extends Application {
 	
+	private Stage stage;
 	
-	private int hight = 15;
-	private int width = 15;
+//	private int hight;
+//	private int width;
 	
 	private int SizeBlock = 40;
 
-	private HashMap<KeyCode, Boolean> keys;
+	
 	public static ArrayList<Rectangle> bonuses;
 	
 	AnimationTimer timer;
-//	public static ArrayList<Enemy> enemys = new ArrayList<>();
-//	public static ArrayList<Block> platforms = new ArrayList<>();
-	
 	int a = 0;
 	
-//	static int BLOCK_SIZE = 50;
-	
-//	Image backgroundImg = new Image(getClass().getResourceAsStream("backgroundImg.jpg"));
-
 	Image image;
 	ImageView imageView;
-	Character player;
+	Hero player;
 
 	static Pane root;
 	Scene scene;
@@ -50,10 +47,10 @@ public class Main extends Application {
 	Enemy enemy = null;
 	int EnemyCount = 2;
 
-	Label lbl = new Label();
+	static Label lbl = new Label();
 
 	
-	private Pane rootLvl;
+	static Pane rootLvl;
 	public static Maze maze;
 	
 //	private int levelWidth;
@@ -120,61 +117,50 @@ public class Main extends Application {
 //	}
 
 	public void update(Stage primaryStage) {
-		
-		if (isPressed(KeyCode.UP)) {
-			player.animation.play();
-			player.animation.setOffsetY(96);
-			player.moveY(-2);
-		} else if (isPressed(KeyCode.DOWN)) {
-			player.animation.play();
-			player.animation.setOffsetY(0);
-			player.moveY(2);
-		} else if (isPressed(KeyCode.RIGHT)) {
-			player.animation.play();
-			player.animation.setOffsetY(64);
-			player.moveX(2);
-		} else if (isPressed(KeyCode.LEFT)) {
-			player.animation.play();
-			player.animation.setOffsetY(32);
-			player.moveX(-2);
-		} else {
-			
-			player.animation.stop();
-		}
-		
-		if (isPressed(KeyCode.CONTROL)) {
-			a++;
-			bullet(a);
-		} else 
-			a = 0;
-		playerGetCash(primaryStage);
-		Bullet.BulletRemove();
-		lbl.setText("Score: " + Bullet.getScore());
-		
-//		enemyMove();
+//		
+//		if (isPressed(KeyCode.UP)) {
+//			player.animation.play();
+//			player.animation.setOffsetY(96);
+//			player.moveY(-2);
+//		} else if (isPressed(KeyCode.DOWN)) {
+//			player.animation.play();
+//			player.animation.setOffsetY(0);
+//			player.moveY(2);
+//		} else if (isPressed(KeyCode.RIGHT)) {
+//			player.animation.play();
+//			player.animation.setOffsetY(64);
+//			player.moveX(2);
+//		} else if (isPressed(KeyCode.LEFT)) {
+//			player.animation.play();
+//			player.animation.setOffsetY(32);
+//			player.moveX(-2);
+//		} else {
+//			
+//			player.animation.stop();
+//		}
+//		
+//		if (isPressed(KeyCode.CONTROL)) {
+//			a++;
+//			bullet(a);
+//		} else 
+//			a = 0;
+//		playerGetCash(primaryStage);
+//		Bullet.BulletRemove();
+//		lbl.setText("Score: " + Bullet.getScore());
+//		
+////		enemyMove();
 	}
 
-	int i;
 	
-	private void playerGetCash(Stage primaryStage) {
-		if(player.getBoundsInParent().intersects(maze.coin.getBoundsInParent())) {
-//			score++;
-			i++;
-			maze.addCash();
-//			Bullet.addScore(1);
-			if(i==1)
-			victory(primaryStage);
-		}
-		}
 
-	private void victory(Stage primaryStage) {
+	public void victory() {
 		Label secondLabel = new Label("Viktory!!!");
 		secondLabel.setFont(new Font(50));
 		Pane secondaryLayout = new Pane();
 		secondaryLayout.getChildren().add(secondLabel);
 		
 //		clear();
-		keys.clear();
+		Settings.keys.clear();
 
 		Scene secondScene = new Scene(secondaryLayout, 200, 100);
 
@@ -190,30 +176,30 @@ public class Main extends Application {
 
 		btn.setOnAction(e->{
 			newWindow.close();						
-			restart(primaryStage);
+			restart();
 		});
 		
 		
 		newWindow.initModality(Modality.WINDOW_MODAL);
 		newWindow.setResizable(false);
 		newWindow.setOnCloseRequest(e->{
-			restart(primaryStage);
+			restart();
 		});
 		
-		newWindow.initOwner(primaryStage);
+		newWindow.initOwner(stage);
 
-		newWindow.setX(primaryStage.getX() + 200);
-		newWindow.setY(primaryStage.getY() + 100);
+		newWindow.setX(stage.getX() + 200);
+		newWindow.setY(stage.getY() + 100);
 
 		newWindow.show();
 	}
 		
-	private void restart(Stage primaryStage) {
+	private void restart() {
 		try {
 			clear();
-			width += 2;
+			Settings.width += 2;
 //			hight += 2;
-			start(primaryStage);
+			start(stage);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -225,9 +211,8 @@ public class Main extends Application {
 
 	private void clear() {
 		
-		i=0;
-		player = new Character(imageView);
-		keys.clear();
+		
+		player = new Hero(imageView);
 		timer.stop();
 		
 		maze.enemys.clear();
@@ -238,9 +223,7 @@ public class Main extends Application {
 		
 	}
 
-	public boolean isPressed(KeyCode key) {
-		return keys.getOrDefault(key, false);
-	}
+
 
 	public void Delete() {
 	}
@@ -250,35 +233,8 @@ public class Main extends Application {
 		
 		image = new Image(getClass().getResourceAsStream("hero.png"));
 		imageView = new ImageView(image);
-		player = new Character(imageView);
-		
-	        player.setTranslateX(42);
-	        player.setTranslateY(42);
-	        player.translateXProperty().addListener((obs,old,newValue)->{
-	        	  maze.getWalls().forEach(e->{
-	        		  if (player.getBoundsInParent().intersects(e.getBoundsInParent())) {
-	        		 if(newValue.doubleValue() == (e.getX()-32)) 
-	        			 player.setTranslateX(old.doubleValue());
-	        		 if(newValue.doubleValue() == (e.getX())+40) 
-	        			 player.setTranslateX(old.doubleValue());
-	        		 
-	        		  }
-		    		});
-	        	  
-	        	  if(newValue.intValue()>300 && newValue.intValue()<width*40-300)
-		                rootLvl.setLayoutX(-(newValue.intValue()-300));
-	        	  
-	        });
-	        player.translateYProperty().addListener((obs,old,newValue)->{
-	            maze.getWalls().forEach(e->{
-	    			if(player.getBoundsInParent().intersects(e.getBoundsInParent())) {
-	    				 if(newValue.doubleValue() == (e.getY()-32)) 
-		        			 player.setTranslateY(old.doubleValue());
-	    				 if(newValue.doubleValue() == (e.getY())+40) 
-		        			 player.setTranslateY(old.doubleValue());
-	    			}
-	    		});
-	        });
+		player = new Hero(imageView);
+	        
 	        rootLvl.getChildren().add(player);
 	}
 	
@@ -305,40 +261,51 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
+		stage = primaryStage;
+		
 		root = new Pane();
 		rootLvl = new Pane();
 		root.setPrefSize(800, 600);
 		scene = new Scene(root);
-		keys = new HashMap<>();
 		bonuses = new ArrayList<>();
 		
-		i=0;
+		
 
 		playerProperty();
-
-		maze = new Maze(hight,width,SizeBlock);
+		
+		
+				
+		maze = new Maze(Settings.hight,Settings.width,SizeBlock);
 		rootLvl.setPrefSize(600, 600);
 		rootLvl.getChildren().add(maze);
 		root.getChildren().add(rootLvl);
 		
 		addMenu();
 		
+		
+		lbl.textProperty().addListener(listener->{
+			victory();
+		});
+		
+		
 //		scene = new Scene(root);
-		scene.setOnKeyPressed(event -> keys.put(event.getCode(), true));
+		scene.setOnKeyPressed(event -> 
+			Settings.keys.put(event.getCode(), true));
 		scene.setOnKeyReleased(event -> {
-			keys.put(event.getCode(), false);
+			Settings.keys.put(event.getCode(), false);
 		});
 		timer = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-				update(primaryStage);
+				player.move();
+//				update(stage);
 //				bonus();
 			}
 		};
 		timer.start();
-		primaryStage.setTitle("Game");
-		primaryStage.setScene(scene);
-		primaryStage.show();
+		stage.setTitle("Game");
+		stage.setScene(scene);
+		stage.show();
 
 	}
 
