@@ -1,13 +1,9 @@
 package application;
 
-import java.util.ArrayList;
-
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -16,25 +12,15 @@ public class Start {
 	
 	private Stage stage;
 
-//	private int hight;
-//	private int width;
-
-	private int SizeBlock = 40;
-
-	public static ArrayList<Rectangle> bonuses;
+//	public static ArrayList<Rectangle> bonuses;
 
 	int a = 0;
-
-//	Image image;
-//	ImageView imageView;
+	
 	Hero player;
 
-	static Pane root;
-	Scene scene;
-
-	Enemy enemy = null;
-	int EnemyCount = 2;
-
+	private static Pane root;
+	
+	private Scene scene;
 	
 
 	static Pane rootLvl;
@@ -42,35 +28,39 @@ public class Start {
 	
 	public Start(Stage primaryStage) {
 		stage = primaryStage;
-
-		root = new Pane();
-		rootLvl = new Pane();
-		root.setPrefSize(800, 600);
-		scene = new Scene(root);
-		bonuses = new ArrayList<>();
-
-		playerProperty();
-
-		maze = new Maze(Settings.hight, Settings.width, SizeBlock);
-		rootLvl.setPrefSize(600, 600);
-		rootLvl.getChildren().add(maze);
-		root.getChildren().add(rootLvl);
-
-		addMenu();
-
-//		lbl.textProperty().addListener(listener -> {
-//			victory();
-//		});
-
-//		scene = new Scene(root);
-		scene.setOnKeyPressed(event -> Settings.keys.put(event.getCode(), true));
-		scene.setOnKeyReleased(event -> {
-			Settings.keys.put(event.getCode(), false);
+		
+		StartPane startPane = new StartPane(800, 600);
+		scene = new Scene(startPane, 800, 600);
+		
+		startPane.start.setOnAction(e->{
+			init(startPane.getNamePlayer());
 		});
 		
 		stage.setTitle("Game");
 		stage.setScene(scene);
 		stage.show();
+	}
+
+	protected void init(String namePlayer) {
+		
+		root = new Pane();
+		rootLvl = new Pane();
+		root.setPrefSize(800, 600);
+		scene = new Scene(root);
+		stage.setScene(scene);
+//		bonuses = new ArrayList<>();
+
+		playerProperty();
+
+		maze = new Maze(Settings.getHight(), Settings.getWidth(), Settings.getSizeBlock());
+		rootLvl.setPrefSize(600, 600);
+		rootLvl.getChildren().add(maze);
+		root.getChildren().add(rootLvl);
+
+		addMenu(namePlayer);
+
+		scene.setOnKeyPressed(event -> Settings.putKeys(event.getCode(), true));
+		scene.setOnKeyReleased(event -> Settings.putKeys(event.getCode(), false));
 	}
 	
 	public Start() {
@@ -79,17 +69,15 @@ public class Start {
 	
 	public void playerProperty() {
 
-//		image = new Image(getClass().getResourceAsStream("hero.png"));
-//		imageView = new ImageView(image);
 		player = new Hero();
 
 		rootLvl.getChildren().add(player);
 	}
 
-	private void addMenu() {
+	private void addMenu(String namePlayer) {
 		
-
-		root.getChildren().add(new Menu());
+		root.getChildren().add(new Menu(namePlayer));
+		
 	}
 	
 	public void victory() {
@@ -99,7 +87,7 @@ public class Start {
 		secondaryLayout.getChildren().add(secondLabel);
 
 //		clear();
-		Settings.keys.clear();
+		Settings.clearKeys();
 
 		Scene secondScene = new Scene(secondaryLayout, 200, 100);
 
@@ -136,16 +124,12 @@ public class Start {
 		
 		try {
 			clear();
-			Settings.width += 2;
-//			hight += 2;
-//			this(stage);
-//			new Start(stage);
-			maze = new Maze(Settings.hight, Settings.width, SizeBlock);
+//			rootLvl = new Pane();
+			Settings.setWidth(Settings.getWidth() + 2);
+			maze = new Maze(Settings.getHight(), Settings.getWidth(), Settings.getSizeBlock());
 			player = new Hero();
 			rootLvl.getChildren().addAll(player, maze);
-			
-			
-//			timer.start();
+//			root.getChildren().add(rootLvl);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -154,20 +138,10 @@ public class Start {
 	}
 
 	private void clear() {
-
-//		player = new Hero(imageView);
-//		timer.stop();
-		
-
-//		maze.enemys.clear();
+//		root.getChildren().remove(rootLvl);
 		rootLvl.setLayoutX(0);
-//		rootLvl.getChildren().remove(maze);
 		rootLvl.getChildren().clear();
 		
-		
-//		player.relocate(42, 42);
-//		root.getChildren().clear();
-
 	}
 	
 	

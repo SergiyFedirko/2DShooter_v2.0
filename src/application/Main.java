@@ -69,7 +69,7 @@ public class Main extends Application {
 //			enemys.get(i).moveX(i + 1);
 //	}
 
-	public void update(Stage primaryStage) {
+//	public void update(Stage primaryStage) {
 //		
 //		if (isPressed(KeyCode.UP)) {
 //			player.animation.play();
@@ -102,12 +102,12 @@ public class Main extends Application {
 //		lbl.setText("Score: " + Bullet.getScore());
 //		
 ////		enemyMove();
-	}
+//	}
 
 	
 
-	public void Delete() {
-	}
+//	public void Delete() {
+//	}
 
 	
 

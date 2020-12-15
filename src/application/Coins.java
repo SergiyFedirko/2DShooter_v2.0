@@ -28,7 +28,7 @@ public class Coins extends Pane{
 		this.y = y;
 //		this.imageView = imageView;
 		this.imageView.setViewport(new Rectangle2D(offsetX, offsetY, width, height));
-		animation = new SpriteAnimation(imageView, Duration.millis(200), count, columns, offsetX, offsetY, width,
+		animation = new SpriteAnimation(imageView, Duration.millis(1000), count, columns, offsetX, offsetY, width,
 				height);
 		getChildren().addAll(imageView);
 		

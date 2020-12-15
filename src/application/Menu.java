@@ -8,33 +8,75 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class Menu extends Pane{
-
-	private static Label lbl = new Label();
 	
-	public Menu() {
+	private Label namePlayer = new Label();
+
+	private static Label score = new Label();
+	
+	private int x = 20;
+	
+	public Menu(String name) {
 		
-		setLayoutX(600);
-		setLayoutY(0);
+		setNamePlayer(name);
 		
-		setPrefSize(200, 600);
+		setLayout();
+		
+		setSize();
 		
 		setBackground(new Background(new BackgroundFill(Color.CADETBLUE, null, null)));
 		
-//		addArea();
-		addLabel();
+		addScore();
+		
+		addName();
+	}
+	
+	private void addName() {
+		namePlayer.setTranslateX(x); namePlayer.setTranslateY(20); 
+		
+		namePlayer.setTextFill(Color.BLACK);
+		
+		namePlayer.setFont(new Font(20));
+		
+		this.getChildren().add(namePlayer);
+	}
+
+	private void setNamePlayer(String name) {
+		
+		namePlayer.setText("Name: " + name);
+		
+	}
+
+	protected void setSize() {
+		
+		setPrefSize(200, 600);
+		
+	}
+
+	protected void setLayout() {
+		
+		setLayoutX(600);
+		
+		setLayoutY(0);
 	}
 	
 	public static void setScore(int score) {
-		lbl.setText("Score: " + score);
+		
+		Menu.score.setText("Score: " + score);
+		
 	}
 
-	protected void addLabel() {
-		lbl.setText("Score: 0");
-		lbl.setLayoutX(50);
-		lbl.setLayoutY(50);
-		lbl.setTextFill(Color.BLACK);
-		lbl.setFont(new Font(20));
-		this.getChildren().add(lbl);
+	protected void addScore() {
+		
+		score.setText("Score: 0");
+		
+		score.setTranslateX(x); score.setTranslateY(70); 
+		
+		score.setTextFill(Color.BLACK);
+		
+		score.setFont(new Font(20));
+		
+		this.getChildren().add(score);
+		
 	}
 	
 }

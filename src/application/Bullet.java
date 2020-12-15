@@ -76,14 +76,14 @@ public class Bullet extends Pane {
 //		}
 //	}
 	
-	public static void BulletRemove() {
+	public void BulletRemove() {
 		bulletsRemove(bulletsR, speed, 0);
 		bulletsRemove(bulletsL, -speed, 0);
 		bulletsRemove(bulletsU, 0, speed);
 		bulletsRemove(bulletsD, 0, -speed);
 	}
 	
-	public static void bulletsRemove (ArrayList<Ellipse> bullets, int speedX, int speedY) {
+	public void bulletsRemove (ArrayList<Ellipse> bullets, int speedX, int speedY) {
 //		for (int i = 0; i < bullets.toArray().length; i++) {					
 //			bullets.get(i).setCenterX(bullets.get(i).getCenterX() + speedX);
 //			bullets.get(i).setCenterY(bullets.get(i).getCenterY() + speedY);
@@ -107,7 +107,7 @@ public class Bullet extends Pane {
 //	        Main.root.getChildren().remove(removeRect);
 			
 		bullets.remove(removeElipse);
-		Start.root.getChildren().remove(removeElipse);
+		this.getChildren().remove(removeElipse);
 	}
 
 }

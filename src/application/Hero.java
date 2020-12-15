@@ -50,8 +50,10 @@ public class Hero extends Characters {
 				}
 			});
 
-			if (newValue.intValue() > 300 && newValue.intValue() < Settings.width * 40 - 300)
-				Start.rootLvl.setLayoutX(-(newValue.intValue() - 300));
+			if (newValue.intValue() > 300 && newValue.intValue() < Settings.getWidth() * 40 - 300) {
+				System.out.println(Settings.getWidth()*40);
+				System.out.println(newValue.intValue());
+				Start.rootLvl.setLayoutX(-(newValue.intValue() - 300));}
 		});
 
 		translateYProperty().addListener((obs, old, newValue) -> {
@@ -69,19 +71,19 @@ public class Hero extends Characters {
 	
 	public void move() {
 
-		if (isPressed(KeyCode.UP)) {
+		if (Settings.isPressed(KeyCode.UP)) {
 			super.animation.play();
 			super.animation.setOffsetY(96);
 			moveY(-2);
-		} else if (isPressed(KeyCode.DOWN)) {
+		} else if (Settings.isPressed(KeyCode.DOWN)) {
 			super.animation.play();
 			super.animation.setOffsetY(0);
 			moveY(2);
-		} else if (isPressed(KeyCode.RIGHT)) {
+		} else if (Settings.isPressed(KeyCode.RIGHT)) {
 			super.animation.play();
 			super.animation.setOffsetY(64);
 			moveX(2);
-		} else if (isPressed(KeyCode.LEFT)) {
+		} else if (Settings.isPressed(KeyCode.LEFT)) {
 			super.animation.play();
 			super.animation.setOffsetY(32);
 			moveX(-2);
@@ -91,7 +93,7 @@ public class Hero extends Characters {
 		}
 		
 		playerGetCash();
-		Bullet.BulletRemove();
+//		Bullet.BulletRemove();
 		Menu.setScore(Bullet.getScore());
 		
 //		enemyMove();
@@ -108,12 +110,10 @@ int i = 0;
 			
 			if(i==1)
 			new Start();
+			timer.stop();
+		
 		}
 		}
-	
-	public boolean isPressed(KeyCode key) {
-		return Settings.keys.getOrDefault(key, false);
-	}
 
 	public void moveX(int x) {
 		boolean right = x > 0 ? true : false;
