@@ -1,6 +1,7 @@
 package application;
 
 import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -8,7 +9,8 @@ import javafx.util.Duration;
 
 public class Coins extends Pane{
 
-	ImageView imageView;
+	private Image image = new Image("img/coins.png");
+	private ImageView imageView = new ImageView(image);
 	int count = 10;
 	int columns = 10;
 	int offsetX = 0;
@@ -21,10 +23,10 @@ public class Coins extends Pane{
 	Rectangle removeRect = null;
 	SpriteAnimation animation;
 	
-	public Coins(ImageView imageView, double x, double y) {
+	public Coins(double x, double y) {
 		this.x = x;
 		this.y = y;
-		this.imageView = imageView;
+//		this.imageView = imageView;
 		this.imageView.setViewport(new Rectangle2D(offsetX, offsetY, width, height));
 		animation = new SpriteAnimation(imageView, Duration.millis(200), count, columns, offsetX, offsetY, width,
 				height);

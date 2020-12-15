@@ -5,17 +5,19 @@ import javafx.scene.image.ImageView;
 
 public class Enemy extends Characters {
 
-	ImageView imageViewEnemy;
-	int width = 36;
-	int height = 36;
-	int score = 0;
+//	private static Image image = new Image("img/enemy.png");
+//	private static ImageView imageViewEnemy = new ImageView(image);
+	
+	private static int width = 36;
+	private static int hight = 36;
+//	private int score = 0;
 
-	int x, y, way;
-	boolean isX;
+	private int x, y, way;
+	private boolean isX;
 
 	public Enemy(ImageView imageViewEnemy, int x, int y, double way, boolean isX) {
 		
-		super(imageViewEnemy, 36, 36);
+		super(imageViewEnemy, hight, width);
 		
 		this.x = x * 40 + 2;
 		this.y = y * 40 + 2;
@@ -48,7 +50,7 @@ public class Enemy extends Characters {
 
 
 	private void collisionWithWall() {
-		Main.maze.getWalls().forEach(wall -> {
+		Start.maze.getWalls().forEach(wall -> {
 			if (this.getBoundsInParent().intersects(wall.getBoundsInParent())) {
 				way *= -1;
 			}

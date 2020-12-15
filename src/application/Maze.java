@@ -20,12 +20,10 @@ public class Maze extends Pane {
 	
 //	public Rectangle cash;
 	
-	Image image;
-	ImageView imageView;
 	public Coins coin;
 	
 	private Enemy enemy = null;
-	public static ArrayList<Enemy> enemys = new ArrayList<>();
+	public ArrayList<Enemy> enemys = new ArrayList<>();
 
 	public ArrayList<Rectangle> getWalls() {
 		return walls;
@@ -59,7 +57,7 @@ public class Maze extends Pane {
 	}
 
 	private void generateMaze() {
-		Image img = new Image(getClass().getResourceAsStream("wall.png"));
+		Image img = new Image("img/wall.png");
 		for (int i = 0; i < hight; i++) {
 			for (int j = 0; j < width; j++) {
 				if ((i % 2 != 0 && j % 2 != 0) && (i < hight - 1 && j < width - 1)) {
@@ -112,7 +110,7 @@ public class Maze extends Pane {
 
 	private void addEnemy(int x, int y, double distance, boolean isX) {
 //		for (int i = 0; i < count; i++) {
-			Image imageEnemy = new Image(getClass().getResourceAsStream("enemy.png"));
+			Image imageEnemy = new Image("img/enemy.png");
 			ImageView imageViewEnemy = new ImageView(imageEnemy);
 			enemy = new Enemy(imageViewEnemy, x, y, distance, isX);
 			
@@ -133,17 +131,13 @@ public class Maze extends Pane {
 		
 	}
 
-	public void addCash() {
-		
-		image = new Image(getClass().getResourceAsStream("coins.png"));
-		imageView = new ImageView(image);
-		
+	public void addCash() {	
 		
 		if(this.getChildren().contains(coin)) {
 			this.getChildren().remove(coin);
 			Bullet.addScore(1);}
 		else {
-			coin = new Coins(imageView,getRandomCoor(width,true)+10, getRandomCoor(hight,true)+10);
+			coin = new Coins(getRandomCoor(width,true)+10, getRandomCoor(hight,true)+10);
 			coin.animation.play();
 			coin.animation.setRate(0.3);
 			

@@ -1,35 +1,46 @@
 package application;
 
-import java.util.HashMap;
-
+import javafx.animation.AnimationTimer;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.stage.Stage;
 
 public class Hero extends Characters {
-	ImageView imageView;
-	int count = 3;
-	int columns = 3;
-	int offsetX = 0;
-	int offsetY = 0;
-	int width = 32;
-	int hight = 32;
 	
-
-	public Hero(ImageView imageView) {
+	private static int width = 32;
+	private static int hight = 32;
+	
+	
+	private static Image image = new Image("img/hero.png");
+	private static ImageView imageView = new ImageView(image);
+	
+	AnimationTimer timer;
+	
+	public Hero() {
 		
-		
-		super(imageView, 32, 32);
+		super(imageView, hight, width);
 
-		setTranslateX(42);
-		setTranslateY(42);
+		setCoor();
 		
 		addListener();
+		
+		timer = new AnimationTimer() {
+			@Override
+			public void handle(long now) {
+				move();
+			}
+		};
+		timer.start();
+	}
+
+	public void setCoor() {
+		setTranslateX(42);
+		setTranslateY(42);
 	}
 
 	private void addListener() {
 		translateXProperty().addListener((obs, old, newValue) -> {
-			Main.maze.getWalls().forEach(e -> {
+			Start.maze.getWalls().forEach(e -> {
 				if (getBoundsInParent().intersects(e.getBoundsInParent())) {
 					if (newValue.doubleValue() == (e.getX() - 32))
 						setTranslateX(old.doubleValue());
@@ -40,11 +51,11 @@ public class Hero extends Characters {
 			});
 
 			if (newValue.intValue() > 300 && newValue.intValue() < Settings.width * 40 - 300)
-				Main.rootLvl.setLayoutX(-(newValue.intValue() - 300));
+				Start.rootLvl.setLayoutX(-(newValue.intValue() - 300));
 		});
 
 		translateYProperty().addListener((obs, old, newValue) -> {
-			Main.maze.getWalls().forEach(e -> {
+			Start.maze.getWalls().forEach(e -> {
 				if (getBoundsInParent().intersects(e.getBoundsInParent())) {
 					if (newValue.doubleValue() == (e.getY() - 32))
 						setTranslateY(old.doubleValue());
@@ -81,7 +92,7 @@ public class Hero extends Characters {
 		
 		playerGetCash();
 		Bullet.BulletRemove();
-		Main.lbl.setText("Score: " + Bullet.getScore());
+		Menu.setScore(Bullet.getScore());
 		
 //		enemyMove();
 	}
@@ -89,13 +100,14 @@ public class Hero extends Characters {
 int i = 0;
 	
 	private void playerGetCash() {
-		if(getBoundsInParent().intersects(Main.maze.coin.getBoundsInParent())) {
+		if(getBoundsInParent().intersects(Start.maze.coin.getBoundsInParent())) {
 //			score++;
 			i++;
-			Main.maze.addCash();
+			Start.maze.addCash();
 //			Bullet.addScore(1);
-//			if(i==1)
-//			Main.victory();
+			
+			if(i==1)
+			new Start();
 		}
 		}
 	
@@ -105,7 +117,7 @@ int i = 0;
 
 	public void moveX(int x) {
 		boolean right = x > 0 ? true : false;
-
+		
 		for (int i = 0; i < Math.abs(x); i++) {
 			if (right) {
 				this.setTranslateX(this.getTranslateX() + 1);
@@ -118,7 +130,7 @@ int i = 0;
 
 	public void moveY(int y) {
 		boolean down = y > 0 ? true : false;
-
+		
 		for (int i = 0; i < Math.abs(y); i++) {
 			if (down)
 				this.setTranslateY(this.getTranslateY() + 1);
