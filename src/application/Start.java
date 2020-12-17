@@ -77,6 +77,8 @@ public class Start {
 		scene.setOnKeyPressed(event -> {Settings.putKeys(event.getCode(), true);
 										player.fire(event.getCode());});
 		scene.setOnKeyReleased(event -> Settings.putKeys(event.getCode(), false));
+		
+		new Bullet();
 	}
 
 	public Start() {

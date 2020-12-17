@@ -152,9 +152,9 @@ int i = 0;
 			double x = this.getTranslateX() + 10;
 			double y = this.getTranslateY() + 10;
 			
-			Bullet bullet = new Bullet(x,y, super.animation.getOffsetY());
+			new Bullet(x,y, super.animation.getOffsetY());
 			
-			Start.rootLvl.getChildren().addAll(bullet);
+//			Start.rootLvl.getChildren().addAll(bullet);
 
 
 	}
