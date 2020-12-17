@@ -2,79 +2,50 @@ package application;
 
 //import java.awt.*;
 import java.util.ArrayList;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Ellipse;
 
 public class Bullet extends Pane {
+	
+	public static ArrayList<Bullet> bulletsR = new ArrayList<>();
+	public static ArrayList<Bullet> bulletsL = new ArrayList<>();
+	public static ArrayList<Bullet> bulletsU = new ArrayList<>();
+	public static ArrayList<Bullet> bulletsD = new ArrayList<>();
+	
+	private static Bullet remove;
 
-//	private double x;
-//	private double y;
-//	private int r;
-	
-//	private int speed;
+	private static int speed = 5;
 	
 	
-//	private Color color;
 	
-	public static ArrayList<Ellipse> bulletsR = new ArrayList<>();
-	public static ArrayList<Ellipse> bulletsL = new ArrayList<>();
-	public static ArrayList<Ellipse> bulletsU = new ArrayList<>();
-	public static ArrayList<Ellipse> bulletsD = new ArrayList<>();
+	public Bullet(double x, double y, int way) {
+		Image image = new Image("img/bullet.png");
+	ImageView imageView = new ImageView(image);
 	
-	private static Ellipse removeElipse = null;
-//	private static Rectangle removeRect = null;
-//	private static int ScoreMain;
-	private static int speed = 10;
+	if(way == 64) {
+		imageView.setRotate(90);
+	bulletsR.add(this);
+	}
+	if(way==32) {
+		imageView.setRotate(270);
+		bulletsL.add(this);
+	}
+	if(way == 96) {
+		imageView.setRotate(180);
+	bulletsD.add(this);}
 	
-//	Image image = new Image(getClass().getResourceAsStream("1.png"));
-//	ImageView imageView = new ImageView(image);
-//	Character player = new Character(imageView);
+	if(way==0)
+		bulletsU.add(this);
+		
+	getChildren().add(imageView);
+	setTranslateX(x);
+	setTranslateY(y);
 	
-	public Bullet() {
+	setPrefSize(10, 10);
 		
 	}
-	
-//	public static int getScore() {
-//		return ScoreMain;
-//	}
-//	
-//	public static void addScore(int score) {
-//		ScoreMain += score;
-//	}
-	
-//	public void Bullet(Boolean one) {
-////		x = 0;
-////		y = 0;
-////		r = 2;
-////		
-////		speed = 10;
-////
-////		color = Color.BLACK;
-//		
-//
-////    	if(isPressed(KeyCode.CONTROL)) {
-////    	System.out.println("2=" + player.getX());
-//		if(one) {
-//		double x = Character.getX() + 15;
-//		double y = player.getY() + 15;
-//		Ellipse elipse = new Ellipse(5, 5);
-//		elipse.setCenterX(x);
-//		elipse.setCenterY(y);
-//		elipse.setFill(Color.RED);
-//		Main.root.getChildren().addAll(elipse);
-//		
-//		if(player.animation.getOffsetY()==64)
-//			bulletsR.add(elipse);
-//		if(player.animation.getOffsetY()==32)
-//			bulletsL.add(elipse);
-//		if(player.animation.getOffsetY()==0)
-//			bulletsU.add(elipse);
-//		if(player.animation.getOffsetY()==96)
-//			bulletsD.add(elipse);
-//		
-//
-//		}
-//	}
 	
 	public static void BulletRemove() {
 		bulletsRemove(bulletsR, speed, 0);
@@ -83,17 +54,17 @@ public class Bullet extends Pane {
 		bulletsRemove(bulletsD, 0, -speed);
 	}
 	
-	public static void bulletsRemove (ArrayList<Ellipse> bullets, int speedX, int speedY) {
+	public static void bulletsRemove (ArrayList<Bullet> bullets, int speedX, int speedY) {
 //		for (int i = 0; i < bullets.toArray().length; i++) {					
 //			bullets.get(i).setCenterX(bullets.get(i).getCenterX() + speedX);
 //			bullets.get(i).setCenterY(bullets.get(i).getCenterY() + speedY);
 			bullets.forEach(elipse ->{
-				elipse.setCenterX(elipse.getCenterX() + speedX);
-				elipse.setCenterY(elipse.getCenterY() + speedY);
+				elipse.setTranslateX(elipse.getTranslateX() + speedX);
+				elipse.setTranslateY(elipse.getTranslateY() + speedY);
 			Start.maze.getWalls().forEach((rect) ->{
 				
 					if(elipse.getBoundsInParent().intersects(rect.getBoundsInParent())) {
-						removeElipse = elipse;
+						remove	= elipse;
 //						ScoreMain++;
 //						System.out.println(ScoreMain);
 					}
@@ -106,8 +77,8 @@ public class Bullet extends Pane {
 //			Main.bonuses.remove(removeRect);
 //	        Main.root.getChildren().remove(removeRect);
 			
-		bullets.remove(removeElipse);
-		Start.rootLvl.getChildren().remove(removeElipse);
+		bullets.remove(remove);
+		Start.rootLvl.getChildren().remove(remove);
 	}
 
 }

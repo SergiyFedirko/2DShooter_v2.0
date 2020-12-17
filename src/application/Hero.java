@@ -149,27 +149,13 @@ int i = 0;
 	public void bullet() {
 
 		
-		
-//		one = one % 5;
-//		if (one == 1) {
-			double x = this.getTranslateX() + 15;
-			double y = this.getTranslateY() + 15;
-			Ellipse elipse = new Ellipse(5, 5);
-			elipse.setCenterX(x);
-			elipse.setCenterY(y);
-			elipse.setFill(Color.RED);
-			Start.rootLvl.getChildren().addAll(elipse);
+			double x = this.getTranslateX() + 10;
+			double y = this.getTranslateY() + 10;
+			
+			Bullet bullet = new Bullet(x,y, super.animation.getOffsetY());
+			
+			Start.rootLvl.getChildren().addAll(bullet);
 
-			if (super.animation.getOffsetY() == 64)
-				Bullet.bulletsR.add(elipse);
-			if (super.animation.getOffsetY() == 32)
-				Bullet.bulletsL.add(elipse);
-			if (super.animation.getOffsetY() == 0)
-				Bullet.bulletsU.add(elipse);
-			if (super.animation.getOffsetY() == 96)
-				Bullet.bulletsD.add(elipse);
-
-//		}
 
 	}
 
