@@ -1,16 +1,12 @@
 package application;
 
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Start {
 	
-	private Stage stage;
+	protected static Stage stage;
 
 //	public static ArrayList<Rectangle> bonuses;
 
@@ -24,9 +20,9 @@ public class Start {
 	
 //	private static Menu menu;
 
-	public static Pane rootLvl;
+	protected static Pane rootLvl;
 	
-	public static Maze maze;
+	protected static Maze maze;
 	
 	public Start(Stage primaryStage) {
 		
@@ -41,6 +37,8 @@ public class Start {
 			init(startPane.getNamePlayer());
 			
 		});
+		
+		stage.setResizable(false);
 		
 		stage.setTitle("Game");
 		
@@ -102,44 +100,17 @@ public class Start {
 	
 	public void victory() {
 		
-		Label secondLabel = new Label("Viktory!!!");
-		secondLabel.setFont(new Font(50));
-		Pane secondaryLayout = new Pane();
-		secondaryLayout.getChildren().add(secondLabel);
+		Settings.clearKeys();
+		
+		new WinGame();
 
 //		clear();
-		Settings.clearKeys();
+		
 
-		Scene secondScene = new Scene(secondaryLayout, 200, 100);
-
-		Button btn = new Button("Next Lvl");
-		btn.setLayoutX(50);
-		btn.setLayoutY(75);
-		btn.setPrefSize(100, 20);
-		secondaryLayout.getChildren().add(btn);
-
-		Stage newWindow = new Stage();
-		newWindow.setTitle("Viktory!!!");
-		newWindow.setScene(secondScene);
-
-		btn.setOnAction(e -> {
-			newWindow.close();
-			restart();
-		});
-
-		newWindow.initModality(Modality.WINDOW_MODAL);
-		newWindow.setResizable(false);
-		newWindow.setOnCloseRequest(e -> {restart();});
-
-		newWindow.initOwner(stage);
-
-//		newWindow.setX(stage.getX() + 200);
-//		newWindow.setY(stage.getY() + 100);
-
-		newWindow.show();
+		
 	}
 
-	private void restart() {
+	public static void restart() {
 		
 		try {
 			clear();
@@ -157,7 +128,7 @@ public class Start {
 
 	}
 
-	private void clear() {
+	private static void clear() {
 		
 		player.respawn();
 		
