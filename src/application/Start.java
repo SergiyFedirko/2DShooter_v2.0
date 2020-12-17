@@ -16,58 +16,78 @@ public class Start {
 
 	int a = 0;
 	
-	Hero player;
+	private static Hero player;
 
 	private static Pane root;
 	
 	private Scene scene;
 	
+//	private static Menu menu;
 
-	static Pane rootLvl;
+	public static Pane rootLvl;
+	
 	public static Maze maze;
 	
 	public Start(Stage primaryStage) {
+		
 		stage = primaryStage;
 		
 		StartPane startPane = new StartPane(800, 600);
+		
 		scene = new Scene(startPane, 800, 600);
 		
 		startPane.start.setOnAction(e->{
+			
 			init(startPane.getNamePlayer());
+			
 		});
 		
 		stage.setTitle("Game");
+		
 		stage.setScene(scene);
+		
 		stage.show();
+		
 	}
 
 	protected void init(String namePlayer) {
 		
 		root = new Pane();
+		
 		rootLvl = new Pane();
+		
 		root.setPrefSize(800, 600);
+		
 		scene = new Scene(root);
+		
 		stage.setScene(scene);
+		
 //		bonuses = new ArrayList<>();
 
-		playerProperty();
+		addPlayer();
 
 		maze = new Maze(Settings.getHight(), Settings.getWidth(), Settings.getSizeBlock());
+		
 		rootLvl.setPrefSize(600, 600);
+		
 		rootLvl.getChildren().add(maze);
+		
 		root.getChildren().add(rootLvl);
 
 		addMenu(namePlayer);
 
-		scene.setOnKeyPressed(event -> Settings.putKeys(event.getCode(), true));
+		scene.setOnKeyPressed(event -> {Settings.putKeys(event.getCode(), true);
+										player.fire(event.getCode());});
 		scene.setOnKeyReleased(event -> Settings.putKeys(event.getCode(), false));
 	}
-	
+
 	public Start() {
+		
 		victory();
+		
 	}
 	
-	public void playerProperty() {
+	private void addPlayer() {
 
 		player = new Hero();
 
@@ -81,6 +101,7 @@ public class Start {
 	}
 	
 	public void victory() {
+		
 		Label secondLabel = new Label("Viktory!!!");
 		secondLabel.setFont(new Font(50));
 		Pane secondaryLayout = new Pane();
@@ -108,9 +129,7 @@ public class Start {
 
 		newWindow.initModality(Modality.WINDOW_MODAL);
 		newWindow.setResizable(false);
-		newWindow.setOnCloseRequest(e -> {
-			restart();
-		});
+		newWindow.setOnCloseRequest(e -> {restart();});
 
 		newWindow.initOwner(stage);
 
@@ -124,12 +143,13 @@ public class Start {
 		
 		try {
 			clear();
-//			rootLvl = new Pane();
+			
 			Settings.setWidth(Settings.getWidth() + 2);
+			
 			maze = new Maze(Settings.getHight(), Settings.getWidth(), Settings.getSizeBlock());
-			player = new Hero();
-			rootLvl.getChildren().addAll(player, maze);
-//			root.getChildren().add(rootLvl);
+			
+			rootLvl.getChildren().add(maze);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -138,9 +158,12 @@ public class Start {
 	}
 
 	private void clear() {
-//		root.getChildren().remove(rootLvl);
+		
+		player.respawn();
+		
+		rootLvl.getChildren().remove(maze);
+		
 		rootLvl.setLayoutX(0);
-		rootLvl.getChildren().clear();
 		
 	}
 	

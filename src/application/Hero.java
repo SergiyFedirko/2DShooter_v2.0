@@ -4,6 +4,9 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Ellipse;
 
 public class Hero extends Characters {
 	
@@ -23,6 +26,7 @@ public class Hero extends Characters {
 		setCoor();
 		
 		addListener();
+		
 		
 		timer = new AnimationTimer() {
 			@Override
@@ -51,8 +55,6 @@ public class Hero extends Characters {
 			});
 
 			if (newValue.intValue() > 300 && newValue.intValue() < Settings.getWidth() * 40 - 300) {
-				System.out.println(Settings.getWidth()*40);
-				System.out.println(newValue.intValue());
 				Start.rootLvl.setLayoutX(-(newValue.intValue() - 300));}
 		});
 
@@ -93,8 +95,8 @@ public class Hero extends Characters {
 		}
 		
 		playerGetCash();
-//		Bullet.BulletRemove();
-		Menu.setScore(Bullet.getScore());
+		
+		Bullet.BulletRemove();
 		
 //		enemyMove();
 	}
@@ -107,11 +109,10 @@ int i = 0;
 			i++;
 			Start.maze.addCash();
 //			Bullet.addScore(1);
-			
 			if(i==1)
 			new Start();
 			timer.stop();
-		
+			i=0;
 		}
 		}
 
@@ -138,8 +139,49 @@ int i = 0;
 				this.setTranslateY(this.getTranslateY() - 1);
 		}
 	}
+	
+	public void fire(KeyCode key) {
+		if(key.getName().equals(KeyCode.CONTROL.getName()))
+			bullet();
+//			System.out.println(key.getName().equals(KeyCode.CONTROL.getName()));
+	}
+	
+	public void bullet() {
+
+		
+		
+//		one = one % 5;
+//		if (one == 1) {
+			double x = this.getTranslateX() + 15;
+			double y = this.getTranslateY() + 15;
+			Ellipse elipse = new Ellipse(5, 5);
+			elipse.setCenterX(x);
+			elipse.setCenterY(y);
+			elipse.setFill(Color.RED);
+			Start.rootLvl.getChildren().addAll(elipse);
+
+			if (super.animation.getOffsetY() == 64)
+				Bullet.bulletsR.add(elipse);
+			if (super.animation.getOffsetY() == 32)
+				Bullet.bulletsL.add(elipse);
+			if (super.animation.getOffsetY() == 0)
+				Bullet.bulletsU.add(elipse);
+			if (super.animation.getOffsetY() == 96)
+				Bullet.bulletsD.add(elipse);
+
+//		}
+
+	}
 
 	public void isBonuseEat() {
 
+	}
+
+	public void respawn() {
+		timer.start();
+		
+		setTranslateX(42);
+		setTranslateY(42);
+		
 	}
 }

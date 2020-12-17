@@ -23,7 +23,7 @@ public class Bullet extends Pane {
 	
 	private static Ellipse removeElipse = null;
 //	private static Rectangle removeRect = null;
-	private static int ScoreMain;
+//	private static int ScoreMain;
 	private static int speed = 10;
 	
 //	Image image = new Image(getClass().getResourceAsStream("1.png"));
@@ -34,13 +34,13 @@ public class Bullet extends Pane {
 		
 	}
 	
-	public static int getScore() {
-		return ScoreMain;
-	}
-	
-	public static void addScore(int score) {
-		ScoreMain += score;
-	}
+//	public static int getScore() {
+//		return ScoreMain;
+//	}
+//	
+//	public static void addScore(int score) {
+//		ScoreMain += score;
+//	}
 	
 //	public void Bullet(Boolean one) {
 ////		x = 0;
@@ -76,14 +76,14 @@ public class Bullet extends Pane {
 //		}
 //	}
 	
-	public void BulletRemove() {
+	public static void BulletRemove() {
 		bulletsRemove(bulletsR, speed, 0);
 		bulletsRemove(bulletsL, -speed, 0);
 		bulletsRemove(bulletsU, 0, speed);
 		bulletsRemove(bulletsD, 0, -speed);
 	}
 	
-	public void bulletsRemove (ArrayList<Ellipse> bullets, int speedX, int speedY) {
+	public static void bulletsRemove (ArrayList<Ellipse> bullets, int speedX, int speedY) {
 //		for (int i = 0; i < bullets.toArray().length; i++) {					
 //			bullets.get(i).setCenterX(bullets.get(i).getCenterX() + speedX);
 //			bullets.get(i).setCenterY(bullets.get(i).getCenterY() + speedY);
@@ -98,8 +98,8 @@ public class Bullet extends Pane {
 //						System.out.println(ScoreMain);
 					}
 				});
-			if(elipse.getCenterX()>=600 || elipse.getCenterY()>=600) 
-			removeElipse = elipse;
+//			if(elipse.getCenterX()>=600 || elipse.getCenterY()>=600) 
+//			removeElipse = elipse;
 		
 						});
 //		}
@@ -107,7 +107,7 @@ public class Bullet extends Pane {
 //	        Main.root.getChildren().remove(removeRect);
 			
 		bullets.remove(removeElipse);
-		this.getChildren().remove(removeElipse);
+		Start.rootLvl.getChildren().remove(removeElipse);
 	}
 
 }

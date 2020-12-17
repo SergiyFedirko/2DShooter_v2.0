@@ -136,7 +136,7 @@ public class Maze extends Pane {
 		if(this.getChildren().contains(coin)) {
 			this.getChildren().remove(coin);
 			Settings.addScore(1);
-			Menu.setScore(Settings.getScore());
+			Menu.setScore();
 		}
 		else {
 			coin = new Coins(getRandomCoor(width,true)+10, getRandomCoor(hight,true)+10);

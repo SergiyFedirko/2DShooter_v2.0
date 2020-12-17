@@ -11,7 +11,7 @@ public class Menu extends Pane{
 	
 	private Label namePlayer = new Label();
 
-	private static Label score = new Label();
+	private static Label score = new Label("Score: 0");
 	
 	private int x = 20;
 	
@@ -59,15 +59,13 @@ public class Menu extends Pane{
 		setLayoutY(0);
 	}
 	
-	public static void setScore(int score) {
+	public static void setScore() {
 		
-		Menu.score.setText("Score: " + score);
+		score.setText("Score: " + Settings.getScore());
 		
 	}
 
 	protected void addScore() {
-		
-		score.setText("Score: 0");
 		
 		score.setTranslateX(x); score.setTranslateY(70); 
 		
