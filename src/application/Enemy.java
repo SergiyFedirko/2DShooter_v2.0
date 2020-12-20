@@ -74,6 +74,9 @@ public class Enemy extends Characters {
     			super.animation.setOffsetY(108);
     		setTranslateY(this.getTranslateY() + way);
     	}
+    	
+    	
+    	
             }
 
 	public void isEnemyDestroy() {

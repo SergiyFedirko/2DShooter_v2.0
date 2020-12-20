@@ -1,23 +1,14 @@
 package application;
 
-import java.lang.reflect.Array;
-//import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 
-public class Bullet extends Pane {
-
-//	public static ArrayList<Bullet> bulletsR = new ArrayList<>();
-//	public static ArrayList<Bullet> bulletsL = new ArrayList<>();
-//	public static ArrayList<Bullet> bulletsU = new ArrayList<>();
-//	public static ArrayList<Bullet> bulletsD = new ArrayList<>();
+public class Bullet extends ImageView {
 
 	enum Side {
 		RIGHT, LEFT, UP, DOWN
@@ -25,58 +16,52 @@ public class Bullet extends Pane {
 
 	private static HashMap<Side, List<Bullet>> bullets = new HashMap<>();
 
-	private static Bullet remove;
-
-	private static int speed = 5;
+	private int speed = 5;
 	
-	AnimationTimer timer;
+	AnimationTimer timer = new AnimationTimer() {
+		
+		@Override
+		public void handle(long now) {
+			fire();
+			
+		}
+
+	
+	};
 
 	public Bullet() {
 		for (Side side : Side.values()) {
 			bullets.put(side, new ArrayList<>());
-		}
-		
-		timer = new AnimationTimer() {
-			
-			@Override
-			public void handle(long now) {
-				fire();
-				
-			}
-
-		
-		};
-		
-		timer.start();
+		}		
 		
 	}
 	
 //	double x,y;
-	Bullet removeBullet;
-	Side key;
+//	Bullet removeBullet;
+	Side side;
 
 private void fire() {
 //	bullets.values().
 	
-	for (Side side : Side.values()) {
-		bullets.get(side).forEach(bullet->{
+//	for (Side side : Side.values()) {
+//		bullets.get(side).forEach(bullet->{
 			for (int i = 0; i < speed; i++) {
 				
 			switch (side) {
 			case RIGHT:
-				bullet.setTranslateX(bullet.getTranslateX() + 1);
+				setTranslateX(getTranslateX() + 1);
 				break;
 
 			case LEFT:
-				bullet.setTranslateX(bullet.getTranslateX() - 1);
+				setTranslateX(getTranslateX() - 1);
 				break;
 				
 			case UP:
-				bullet.setTranslateY(bullet.getTranslateY() - 1);
+				setTranslateY(getTranslateY() - 1);
 				break;
 				
 			case DOWN:
-				bullet.setTranslateY(bullet.getTranslateY() + 1);
+				setTranslateY(getTranslateY() + 1);
 				break;
 				
 			default:
@@ -85,23 +70,32 @@ private void fire() {
 			}
 			
 			}
-			System.out.println(bullets);
-			isWall(bullet, side);
-//			System.out.println(x+" "+y);
+			isWall();
 			
-		});
-		
-	}
+//			for (Side side : Side.values()) 
+			if(bullets.get(Side.RIGHT).size() == 0 &&
+					bullets.get(Side.LEFT).size() == 0 &&
+					bullets.get(Side.UP).size() == 0 &&
+					bullets.get(Side.DOWN).size() == 0)
+				timer.stop();
+			
+//			System.out.println(bullets);
+			
+//		});
+//		
+//	}
 	
 //	bullets.get(key).remove(removeBullet);
 }
 
-	private void isWall(Bullet bullet, Side side) {
+	private void isWall() {
 	Start.maze.getWalls().forEach(wall->{
-		if(bullet.getBoundsInParent().intersects(wall.getBoundsInParent())) {
-			bullets.get(side).remove(bullet);
+		if(getBoundsInParent().intersects(wall.getBoundsInParent())) {
+			bullets.get(side).remove(this);
+			Start.rootLvl.getChildren().remove(this);
+			
 //			removeBullet = bullet;
-			key = side;
+//			key = side;
 		}
 	});
 	
@@ -109,72 +103,43 @@ private void fire() {
 
 	public Bullet(double x, double y, int way) {
 		Image image = new Image("img/bullet.png");
-		ImageView imageView = new ImageView(image);
-		
+//		ImageView imageView = new ImageView(image);
+		setImage(image);
 		
 
 		if (way == 64) {
-			imageView.setRotate(90);
-			bullets.get(Side.RIGHT).add(this);
+			setRotate(90);
+			side = Side.RIGHT;
+			
 
 		}
 		if (way == 32) {
-			imageView.setRotate(270);
-			bullets.get(Side.LEFT).add(this);
-//			bulletsL.add(this);
+			setRotate(270);
+			side = Side.LEFT;
 		}
 		if (way == 0) {
-			imageView.setRotate(180);
-//			bulletsD.add(this);
-			bullets.get(Side.DOWN).add(this);
+			setRotate(180);
+			side = Side.DOWN;
 		}
 
 		if (way == 96)
-//			bulletsU.add(this);
-			bullets.get(Side.UP).add(this);
+			side = Side.UP;
+		
+			bullets.get(side).add(this);
 
-		getChildren().add(imageView);
+//		getChildren().add(imageView);
 		setTranslateX(x);
 		setTranslateY(y);
 
-		setPrefSize(10, 10);
+		setFitWidth(10);
+		setFitHeight(10);
+		
+//		setPrefSize(10, 10);
 
 		Start.rootLvl.getChildren().addAll(this);
+		
 
-	}
-
-	public static void BulletRemove() {
-//		bulletsRemove(bulletsR, speed, 0);
-//		bulletsRemove(bulletsL, -speed, 0);
-//		bulletsRemove(bulletsU, 0, speed);
-//		bulletsRemove(bulletsD, 0, -speed);
-	}
-
-	public static void bulletsRemove(ArrayList<Bullet> bullets, int speedX, int speedY) {
-//		for (int i = 0; i < bullets.toArray().length; i++) {					
-//			bullets.get(i).setCenterX(bullets.get(i).getCenterX() + speedX);
-//			bullets.get(i).setCenterY(bullets.get(i).getCenterY() + speedY);
-		bullets.forEach(elipse -> {
-			elipse.setTranslateX(elipse.getTranslateX() + speedX);
-			elipse.setTranslateY(elipse.getTranslateY() + speedY);
-			Start.maze.getWalls().forEach((rect) -> {
-
-				if (elipse.getBoundsInParent().intersects(rect.getBoundsInParent())) {
-					remove = elipse;
-//						ScoreMain++;
-//						System.out.println(ScoreMain);
-				}
-			});
-//			if(elipse.getCenterX()>=600 || elipse.getCenterY()>=600) 
-//			removeElipse = elipse;
-
-		});
-//		}
-//			Main.bonuses.remove(removeRect);
-//	        Main.root.getChildren().remove(removeRect);
-
-		bullets.remove(remove);
-		Start.rootLvl.getChildren().remove(remove);
+		timer.start();
 	}
 
 }
