@@ -89,7 +89,7 @@ public class Bullet extends ImageView {
 				&& bullets.get(Side.UP).size() == 0 && bullets.get(Side.DOWN).size() == 0)
 			timer.stop();
 
-		System.out.println(bullets);
+//		System.out.println(bullets);
 
 //		});
 //		

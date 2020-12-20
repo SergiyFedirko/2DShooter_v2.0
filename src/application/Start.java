@@ -64,7 +64,7 @@ public class Start {
 
 		addPlayer();
 
-		maze = new Maze(Settings.getHight(), Settings.getWidth(), Settings.getSizeBlock());
+		maze = new Maze();
 		
 		rootLvl.setPrefSize(600, 600);
 		
@@ -119,7 +119,7 @@ public class Start {
 			
 			Settings.setWidth(Settings.getWidth() + 2);
 			
-			maze = new Maze(Settings.getHight(), Settings.getWidth(), Settings.getSizeBlock());
+			maze = new Maze();
 			
 			rootLvl.getChildren().add(maze);
 			

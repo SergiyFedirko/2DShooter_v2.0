@@ -1,6 +1,5 @@
 package application;
 
-import application.Bullet.Side;
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.ImageView;
 
@@ -11,7 +10,6 @@ public class Enemy extends Characters {
 	
 	private static int width = 36;
 	private static int hight = 36;
-//	private int score = 0;
 
 	private int x, y, way;
 	private boolean isX;

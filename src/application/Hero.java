@@ -4,9 +4,6 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Ellipse;
 
 public class Hero extends Characters {
 	
@@ -19,9 +16,38 @@ public class Hero extends Characters {
 	
 	AnimationTimer timer;
 	
+	AnimationTimer startTime = new AnimationTimer() {
+		
+		int startTime;
+		
+		@Override
+		public void handle(long now) {
+			if(startTime< 100)
+				startTime++;
+			else {
+				startTime = 0;
+				Hero.this.startTime.stop();
+			}
+				
+	
+	if((startTime/10)%2>0)
+	setOpacity(0.2);
+	else
+	setOpacity(1);
+	
+//	System.out.println(startTime);
+//	System.out.println((startTime/100)%2>0);
+			
+		}
+	};
+	
+//	int startTime = 0;
+	
 	public Hero() {
 		
 		super(imageView, hight, width);
+		
+		startTime.start();
 
 		setCoor();
 		
@@ -29,12 +55,21 @@ public class Hero extends Characters {
 		
 		
 		timer = new AnimationTimer() {
+			
 			@Override
 			public void handle(long now) {
 				move();
+//				blik();
+				
+				
+				
 			}
 		};
 		timer.start();
+	}
+
+	private void blik(){
+		
 	}
 
 	public void setCoor() {
@@ -165,9 +200,12 @@ int i = 0;
 
 	public void respawn() {
 		timer.start();
+		startTime.start();
 		
 		setTranslateX(42);
 		setTranslateY(42);
+		
+		
 		
 	}
 }
