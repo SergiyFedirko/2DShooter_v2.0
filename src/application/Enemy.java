@@ -1,5 +1,6 @@
 package application;
 
+import application.Bullet.Side;
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.ImageView;
 
@@ -75,11 +76,11 @@ public class Enemy extends Characters {
     		setTranslateY(this.getTranslateY() + way);
     	}
     	
-    	
-    	
             }
 
 	public void isEnemyDestroy() {
+		Start.maze.getChildren().remove(this);
+		Start.maze.enemys.remove(this);
 
 	}
 }

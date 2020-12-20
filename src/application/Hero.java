@@ -96,7 +96,7 @@ public class Hero extends Characters {
 		
 		playerGetCash();
 		
-		Bullet.BulletRemove();
+//		Bullet.BulletRemove();
 		
 //		enemyMove();
 	}

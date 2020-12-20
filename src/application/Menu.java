@@ -1,6 +1,8 @@
 package application;
 
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
@@ -15,6 +17,10 @@ public class Menu extends Pane{
 	
 	private int x = 20;
 	
+	private ImageView imageView = new ImageView(new Image("img/bullet.png"));
+	
+	private static Label countBullets = new Label("20");
+	
 	public Menu(String name) {
 		
 		setNamePlayer(name);
@@ -28,8 +34,36 @@ public class Menu extends Pane{
 		addScore();
 		
 		addName();
+		
+		addCountBullets();
 	}
 	
+	private void addCountBullets() {
+		
+		imageView.setTranslateX(x);		imageView.setTranslateY(120);
+		
+		imageView.setFitWidth(20);
+		
+		imageView.setFitHeight(20);
+		
+		countBullets.setTranslateX(x+40);		countBullets.setTranslateY(115);
+		
+		countBullets.setTextFill(Color.BLACK);
+		
+		countBullets.setFont(new Font(20));
+		
+		getChildren().addAll(imageView, countBullets);
+		
+	}
+	
+	public static int getCountBullets() {
+		return Integer.parseInt(countBullets.getText());
+	}
+	
+	public static void setCountBullets(int count) {
+		countBullets.setText(Integer.toString(count));
+	}
+
 	private void addName() {
 		namePlayer.setTranslateX(x); namePlayer.setTranslateY(20); 
 		
@@ -37,7 +71,7 @@ public class Menu extends Pane{
 		
 		namePlayer.setFont(new Font(20));
 		
-		this.getChildren().add(namePlayer);
+		getChildren().add(namePlayer);
 	}
 
 	private void setNamePlayer(String name) {
