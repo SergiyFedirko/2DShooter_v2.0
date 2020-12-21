@@ -74,6 +74,9 @@ public class Enemy extends Characters {
     		setTranslateY(this.getTranslateY() + way);
     	}
     	
+    	if(getBoundsInParent().intersects(Start.player.getBoundsInParent()))
+    		Start.player.collisionWithEnemy();
+    	
             }
 
 	public void isEnemyDestroy() {

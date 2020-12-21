@@ -31,22 +31,36 @@ public class Menu extends Pane{
 		
 		setBackground(new Background(new BackgroundFill(Color.CADETBLUE, null, null)));
 		
+		addLifeBar();
+		
 		addScore();
 		
 		addName();
 		
 		addCountBullets();
+		
 	}
 	
+	private void addLifeBar() {
+//		HeartBar bar = new HeartBar();
+		
+		Start.heartBar.setTranslateX(x);
+		
+		Start.heartBar.setTranslateY(60);
+		
+		getChildren().add(Start.heartBar);
+		
+	}
+
 	private void addCountBullets() {
 		
-		imageView.setTranslateX(x);		imageView.setTranslateY(120);
+		imageView.setTranslateX(x);		imageView.setTranslateY(150);
 		
 		imageView.setFitWidth(20);
 		
 		imageView.setFitHeight(20);
 		
-		countBullets.setTranslateX(x+40);		countBullets.setTranslateY(115);
+		countBullets.setTranslateX(x+40);		countBullets.setTranslateY(150);
 		
 		countBullets.setTextFill(Color.BLACK);
 		
@@ -101,7 +115,7 @@ public class Menu extends Pane{
 
 	protected void addScore() {
 		
-		score.setTranslateX(x); score.setTranslateY(70); 
+		score.setTranslateX(x); score.setTranslateY(120); 
 		
 		score.setTextFill(Color.BLACK);
 		

@@ -15,7 +15,7 @@ public class Coins extends Pane{
 	int offsetX = 0;
 	int offsetY = 0;
 	int width = 20;
-	int height = 20;
+	int hight = 20;
 	double x, y;
 
 	SpriteAnimation animation;
@@ -23,9 +23,9 @@ public class Coins extends Pane{
 	public Coins(double x, double y) {
 		this.x = x;
 		this.y = y;
-		this.imageView.setViewport(new Rectangle2D(offsetX, offsetY, width, height));
+		this.imageView.setViewport(new Rectangle2D(offsetX, offsetY, width, hight));
 		animation = new SpriteAnimation(imageView, Duration.millis(1000), count, columns, offsetX, offsetY, width,
-				height);
+				hight);
 		getChildren().addAll(imageView);
 		
 		setCoor();

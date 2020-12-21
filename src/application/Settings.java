@@ -13,6 +13,16 @@ public class Settings {
 	private static HashMap<KeyCode, Boolean> keys = new HashMap<>();
 	
 	private  static int score;
+	
+	private static int life = 6;
+	
+	public static int getLife() {
+		return life;
+	}
+	
+	public static void setLife(int life) {
+		Settings.life = life;
+	}
 
 	public static int getHight() {
 		return hight;

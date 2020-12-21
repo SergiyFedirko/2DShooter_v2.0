@@ -12,7 +12,9 @@ public class Start {
 
 	int a = 0;
 	
-	private static Hero player;
+	protected static Hero player;
+	
+	protected static HeartBar heartBar = new HeartBar();
 
 	private static Pane root;
 	

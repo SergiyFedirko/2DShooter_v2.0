@@ -68,9 +68,7 @@ public class Hero extends Characters {
 		timer.start();
 	}
 
-	private void blik(){
-		
-	}
+	
 
 	public void setCoor() {
 		setTranslateX(42);
@@ -206,6 +204,20 @@ int i = 0;
 		setTranslateY(42);
 		
 		
+		
+	}
+
+
+
+	public void collisionWithEnemy() {
+		startTime.start();
+		
+		setTranslateX(42);
+		setTranslateY(42);
+		
+		Settings.setLife(Settings.getLife()-1);
+		
+		Start.heartBar.changeLife(Settings.getLife());
 		
 	}
 }
