@@ -18,10 +18,10 @@ public class Maze extends Pane {
 
 	private ArrayList<Rectangle> walls = new ArrayList<>();
 
-	public Coins coin;
+	protected Coins coin;
 
 	private Enemy enemy = null;
-	public ArrayList<Enemy> enemys = new ArrayList<>();
+	public static ArrayList<Enemy> enemys = new ArrayList<>();
 
 	public ArrayList<Rectangle> getWalls() {
 		return walls;
@@ -39,9 +39,18 @@ public class Maze extends Pane {
 		this.hight = Settings.getHight();
 		this.width = Settings.getWidth();
 		this.SizeBlock = Settings.getSizeBlock();
+		
+		coin = new Coins(getRandomCoor(width, true) + 10, getRandomCoor(hight, true) + 10);
+		
+		
+		getChildren().add(coin);
 
-		generateMaze();
-		showMaze();
+		startMaze();
+		
+		
+	}
+
+	private void enemyMove() {
 		enemys.forEach(enemy -> {
 			enemy.startMove();
 		});
@@ -49,6 +58,24 @@ public class Maze extends Pane {
 
 	private void showMaze() {
 		this.getChildren().addAll(walls);
+	}
+	
+	public void restartMaze() {
+		getChildren().removeAll(walls);
+		getChildren().removeAll(enemys);
+		enemys.clear();
+		walls.clear();
+		neighbours.clear();
+		visited.clear();
+		stack.clear();
+		width += 2;
+		startMaze();
+	}
+
+	private void startMaze() {
+		generateMaze();
+		showMaze();
+		enemyMove();
 	}
 
 	private void generateMaze() {
@@ -114,16 +141,17 @@ public class Maze extends Pane {
 
 	public void addCash() {
 
-		if (this.getChildren().contains(coin)) {
-			this.getChildren().remove(coin);
-			Settings.addScore(1);
-			Menu.setScore();
-		} else {
-			coin = new Coins(getRandomCoor(width, true) + 10, getRandomCoor(hight, true) + 10);
-			coin.animation.play();
-			this.getChildren().add(coin);
+//		if (this.getChildren().contains(coin)) {
+//			this.getChildren().remove(coin);
+//			Settings.addScore(1);
+//			Menu.setScore();
+//		} else {
+//			coin.relocate(getRandomCoor(width, true) + 10, getRandomCoor(hight, true) + 10);
+		coin.restart(getRandomCoor(width, true) + 10, getRandomCoor(hight, true) + 10);
+			
+//			this.getChildren().add(coin);
 
-		}
+//		}
 	}
 
 	private double getRandomCoor(int length, boolean isCoin) {

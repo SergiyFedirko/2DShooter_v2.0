@@ -121,7 +121,9 @@ public class Start {
 			
 			Settings.setWidth(Settings.getWidth() + 2);
 			
-			maze = new Maze();
+			maze.restartMaze();
+			
+//			maze = new Maze();
 			
 			rootLvl.getChildren().add(maze);
 			

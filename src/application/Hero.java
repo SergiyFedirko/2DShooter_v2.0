@@ -89,6 +89,8 @@ public class Hero extends Characters {
 
 			if (newValue.intValue() > 300 && newValue.intValue() < Settings.getWidth() * 40 - 300) {
 				Start.rootLvl.setLayoutX(-(newValue.intValue() - 300));}
+			
+			playerGetCash();
 		});
 
 		translateYProperty().addListener((obs, old, newValue) -> {
@@ -100,6 +102,7 @@ public class Hero extends Characters {
 						setTranslateY(old.doubleValue());
 				}
 			});
+			playerGetCash();
 		});
 
 	}
@@ -127,7 +130,8 @@ public class Hero extends Characters {
 			super.animation.stop();
 		}
 		
-		playerGetCash();
+		
+		collisionWithEnemy();
 		
 //		Bullet.BulletRemove();
 		
@@ -139,13 +143,17 @@ int i = 0;
 	private void playerGetCash() {
 		if(getBoundsInParent().intersects(Start.maze.coin.getBoundsInParent())) {
 //			score++;
+			Settings.addScore(1);
+			Menu.setScore();
 			i++;
 			Start.maze.addCash();
 //			Bullet.addScore(1);
-			if(i==1)
-			new Start();
+			if(i==1) {
 			timer.stop();
+			new Start();
+			
 			i=0;
+			}
 		}
 		}
 
@@ -203,14 +211,15 @@ int i = 0;
 		setTranslateX(42);
 		setTranslateY(42);
 		
-		
-		
 	}
 
 
 
 	public void collisionWithEnemy() {
-		startTime.start();
+		Start.maze.enemys.forEach(enemy->{
+			if(getBoundsInParent().intersects(enemy.getBoundsInParent())) {
+				startTime.start();
+				Start.rootLvl.setLayoutX(0);
 		
 		setTranslateX(42);
 		setTranslateY(42);
@@ -218,6 +227,11 @@ int i = 0;
 		Settings.setLife(Settings.getLife()-1);
 		
 		Start.heartBar.changeLife(Settings.getLife());
+			}
+		});
+	   	
+    		
+		
 		
 	}
 }

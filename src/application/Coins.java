@@ -21,18 +21,30 @@ public class Coins extends Pane{
 	SpriteAnimation animation;
 	
 	public Coins(double x, double y) {
-		this.x = x;
-		this.y = y;
 		this.imageView.setViewport(new Rectangle2D(offsetX, offsetY, width, hight));
 		animation = new SpriteAnimation(imageView, Duration.millis(1000), count, columns, offsetX, offsetY, width,
 				hight);
 		getChildren().addAll(imageView);
 		
-		setCoor();
+		animation.play();
+		
+		restart(x,y);
 	}
+//
+//	public Coins() {
+//		// TODO Auto-generated constructor stub
+//	}
 
 	private void setCoor() {
 		this.setTranslateX(x);
 		this.setTranslateY(y);
+	}
+
+	public void restart(double x, double y) {
+		this.x = x;
+		this.y = y;
+		
+		setCoor();
+		
 	}
 }

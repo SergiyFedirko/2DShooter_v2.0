@@ -74,12 +74,13 @@ public class Enemy extends Characters {
     		setTranslateY(this.getTranslateY() + way);
     	}
     	
-    	if(getBoundsInParent().intersects(Start.player.getBoundsInParent()))
-    		Start.player.collisionWithEnemy();
+//    	if(getBoundsInParent().intersects(Start.player.getBoundsInParent()))
+//    		Start.player.collisionWithEnemy();
     	
             }
 
 	public void isEnemyDestroy() {
+//		Start.rootLvl
 		Start.maze.getChildren().remove(this);
 		Start.maze.enemys.remove(this);
 

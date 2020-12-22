@@ -6,7 +6,7 @@ import javafx.scene.input.KeyCode;
 public class Settings {
 	
 	private static int hight = 15;
-	private static int width = 15;
+	private static int width = 19;
 	
 	private static int SizeBlock = 40;
 

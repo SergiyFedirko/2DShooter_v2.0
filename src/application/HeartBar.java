@@ -21,7 +21,7 @@ public class HeartBar extends Pane {
 	public void changeLife(int life) {
 		
 		int heart = life/2;
-		// heart = 3 or 2 or 1; 
+		// heart = 3 or 2 or 1; s
 		int halfHeart = life%2;
 		
 //		bar.forEach(e-> {
