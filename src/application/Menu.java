@@ -8,6 +8,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 public class Menu extends Pane{
 	
@@ -90,7 +91,21 @@ public class Menu extends Pane{
 
 	private void setNamePlayer(String name) {
 		
-		namePlayer.setText("Name: " + name);
+//		name = name.toUpperCase();
+		
+		Label text = new Label(name);
+		
+		text.setStyle("-fx-font-weight: bold");
+		text.setFont(new Font(20));
+		
+		text.setTextFill(Color.BLACK);
+		
+		namePlayer.setText("Name: ");
+		
+		text.setTranslateX(x+60);
+		text.setTranslateY(20);
+		
+		getChildren().add(text);
 		
 	}
 

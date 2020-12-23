@@ -72,7 +72,7 @@ public class Bullet extends ImageView {
 		}
 		isWall();
 
-		Start.maze.enemys.forEach(enemy -> {
+		Maze.enemys.forEach(enemy -> {
 			if (getBoundsInParent().intersects(enemy.getBoundsInParent())) {
 				Start.rootLvl.getChildren().remove(this);
 				bullets.get(side).remove(this);

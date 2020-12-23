@@ -20,14 +20,14 @@ public class EndGame extends Stage {
 		Pane secondaryLayout = new Pane();
 		
 		secondScene = new Scene(secondaryLayout, 200, 100);
+		
+		Settings.clearKeys();
 
 		addLabel();
 		
 		addButton();
 		
 		closeWindow();
-		
-		buttonAction();
 		
 		secondaryLayout.getChildren().addAll(secondLabel,btn);
 
@@ -49,18 +49,6 @@ public class EndGame extends Stage {
 		setOnCloseRequest(e -> {
 			
 			Start.stage.close();
-			
-		});
-		
-	}
-
-	private void buttonAction() {
-		
-		btn.setOnAction(e -> {
-			
-			close();
-			
-			Start.restart();
 			
 		});
 		

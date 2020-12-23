@@ -90,7 +90,7 @@ public class Hero extends Characters {
 			if (newValue.intValue() > 300 && newValue.intValue() < Settings.getWidth() * 40 - 300) {
 				Start.rootLvl.setLayoutX(-(newValue.intValue() - 300));}
 			
-			playerGetCash();
+			
 		});
 
 		translateYProperty().addListener((obs, old, newValue) -> {
@@ -102,7 +102,6 @@ public class Hero extends Characters {
 						setTranslateY(old.doubleValue());
 				}
 			});
-			playerGetCash();
 		});
 
 	}
@@ -132,6 +131,7 @@ public class Hero extends Characters {
 		
 		
 		collisionWithEnemy();
+		playerGetCash();
 		
 //		Bullet.BulletRemove();
 		
@@ -143,17 +143,17 @@ int i = 0;
 	private void playerGetCash() {
 		if(getBoundsInParent().intersects(Start.maze.coin.getBoundsInParent())) {
 //			score++;
-			Settings.addScore(1);
-			Menu.setScore();
-			i++;
+			
+//			i++;
 			Start.maze.addCash();
-//			Bullet.addScore(1);
-			if(i==1) {
+
+//			if(i==1) {
 			timer.stop();
-			new Start();
+
+			new WinGame();
 			
 			i=0;
-			}
+//			}
 		}
 		}
 
@@ -216,7 +216,7 @@ int i = 0;
 
 
 	public void collisionWithEnemy() {
-		Start.maze.enemys.forEach(enemy->{
+		Maze.enemys.forEach(enemy->{
 			if(getBoundsInParent().intersects(enemy.getBoundsInParent())) {
 				startTime.start();
 				Start.rootLvl.setLayoutX(0);
@@ -225,6 +225,12 @@ int i = 0;
 		setTranslateY(42);
 		
 		Settings.setLife(Settings.getLife()-1);
+		
+		if(Settings.getLife() == 0) {
+			timer.stop();
+			Settings.setLife(6);
+			new GameOver();
+		}
 		
 		Start.heartBar.changeLife(Settings.getLife());
 			}

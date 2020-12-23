@@ -68,7 +68,8 @@ public class Maze extends Pane {
 		neighbours.clear();
 		visited.clear();
 		stack.clear();
-		width += 2;
+//		width += 2;
+		this.width = Settings.getWidth();
 		startMaze();
 	}
 

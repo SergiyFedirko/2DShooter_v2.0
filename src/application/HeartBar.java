@@ -24,9 +24,9 @@ public class HeartBar extends Pane {
 		// heart = 3 or 2 or 1; s
 		int halfHeart = life%2;
 		
-//		bar.forEach(e-> {
-//			e.setNoHeart();			
-//		});
+		bar.forEach(e-> {
+			e.setFullHeart();			
+		});
 		
 		for(int i = 2; i>heart-1; i--)
 			bar.get(i).setNoHeart();

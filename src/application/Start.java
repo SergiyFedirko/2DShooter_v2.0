@@ -36,7 +36,15 @@ public class Start {
 		
 		startPane.start.setOnAction(e->{
 			
+			String namePlayer = startPane.getNamePlayer();
+			
+			if(!namePlayer.isEmpty())
+			
 			init(startPane.getNamePlayer());
+			
+			else
+				
+			startPane.addTextLabel();
 			
 		});
 		
@@ -82,12 +90,6 @@ public class Start {
 		
 		new Bullet();
 	}
-
-	public Start() {
-		
-		victory();
-		
-	}
 	
 	private void addPlayer() {
 
@@ -101,31 +103,19 @@ public class Start {
 		root.getChildren().add(new Menu(namePlayer));
 		
 	}
-	
-	public void victory() {
-		
-		Settings.clearKeys();
-		
-		new WinGame();
-
-//		clear();
-		
-
-		
-	}
 
 	public static void restart() {
 		
 		try {
 			clear();
 			
+			Settings.addScore(1);
+			
+			Menu.setScore();
+			
 			Settings.setWidth(Settings.getWidth() + 2);
 			
 			maze.restartMaze();
-			
-//			maze = new Maze();
-			
-			rootLvl.getChildren().add(maze);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -133,12 +123,23 @@ public class Start {
 		}
 
 	}
+	
+	public static void gameOver() {
+		clear();
+		
+		Settings.setScore(0);
+		
+		Menu.setScore();
+		
+		Settings.setWidth(15);
+		
+		maze.restartMaze();
+		
+	}
 
 	private static void clear() {
 		
 		player.respawn();
-		
-		rootLvl.getChildren().remove(maze);
 		
 		rootLvl.setLayoutX(0);
 		

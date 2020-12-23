@@ -6,7 +6,7 @@ import javafx.scene.input.KeyCode;
 public class Settings {
 	
 	private static int hight = 15;
-	private static int width = 19;
+	private static int width = 15;
 	
 	private static int SizeBlock = 40;
 
@@ -14,7 +14,7 @@ public class Settings {
 	
 	private  static int score;
 	
-	private static int life = 6;
+	private static int life = 2;
 	
 	public static int getLife() {
 		return life;
